@@ -1,0 +1,57 @@
+package:
+  name: {{ EXAR_PROJECT_NAME }}
+  version: {{ EXAR_CONDA_BUILD_VERSION }}
+
+build:
+  number: {{ EXAR_CONDA_BUILD_NUMBER }}
+  {% if EXAR_CONDA_BUILD_FEATURE_TAG is defined %}
+  string: {{ EXAR_CONDA_BUILD_FEATURE_TAG }}
+  {% endif %}
+
+source:
+  path: ../..
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - ipykernel
+    - ipywidgets
+    - tqdm
+    - numpy>=1.13
+    - scipy
+    - scikit-learn
+    - lightgbm
+    - networkx
+    - jinja2
+    - rdkit
+    - ambertools
+    - openmm
+    - mdanalysis
+    - openbabel
+    - mdtraj
+    - parmed
+    - biopython
+    - parker
+
+  run:
+    - python
+    - setuptools
+    - ipykernel
+    - ipywidgets
+    - tqdm
+    - numpy>=1.13
+    - scipy
+    - scikit-learn
+    - lightgbm
+    - networkx
+    - jinja2
+    - rdkit
+    - ambertools
+    - openmm
+    - mdanalysis
+    - openbabel
+    - mdtraj
+    - parmed
+    - biopython
+    - parker
