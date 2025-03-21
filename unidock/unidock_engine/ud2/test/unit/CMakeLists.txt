@@ -1,0 +1,23 @@
+
+# Use Catch2 for all tests (instead of gtest)
+message("      [Sub-Section] Building unit tests ...")
+set(sources unit_test.cpp
+        cuda/test_bfgs.cpp
+        cuda/test_cu_common.cpp
+
+        format/test_json.cpp
+
+        geometry/test_quaternion.cpp
+
+        myutils/test_math.cpp
+
+        score/test_vina.cpp
+
+        search/test_mc.cpp
+        ../component/test_scoring.cpp
+)
+
+add_executable(${TESTS_NAME} ${sources})
+target_link_libraries(${TESTS_NAME} ${LIB_NAME} catch2_3.7) # libcatch2_3.7.a doesn't have main function
+
+

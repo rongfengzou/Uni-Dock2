@@ -1,0 +1,6 @@
+channels:
+ - http://repo.xtalpi.io/channel/tags/D
+ - conda-forge
+ - defaults
+channel_priority: disabled
+show_channel_urls: true
