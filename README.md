@@ -14,7 +14,15 @@ chmod +x ./install.sh
 
 
 ## Usage
-To use Uni-Dock 2, follow this example:
+* command line example:
+```
+unidock2 -r receptor.pdb -lb ligand_batch.dat --center 5.12 18.35 37.36 --size 30.0 30.0 30.0
+
+unidock2 -v
+unidock2 -h
+```
+
+To use Uni-Dock 2 for python scripting, follow this example:
 * Ensure you have the required input files: a PDB file and an SDF file.
 * Define the target center and box size for docking.
 * Call the UnidockProtocolRunner with the appropriate parameters.
