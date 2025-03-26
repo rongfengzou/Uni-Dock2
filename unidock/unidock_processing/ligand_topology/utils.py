@@ -3,6 +3,9 @@ from copy import deepcopy
 import re
 import warnings
 
+import numpy as np
+import networkx as nx
+
 from rdkit import Chem
 from rdkit.Chem import ChemicalForceFields
 from rdkit.Chem.rdMolAlign import AlignMol
@@ -589,3 +592,66 @@ def record_gaff2_atom_types_and_parameters(ligand_sdf_file_name, ligand_charge_m
     ##############################################################################
 
     return atom_type_list, partial_charge_list, atom_parameter_dict, torsion_parameter_dict
+
+def root_finding_strategy(fragment_mol_list, rotatable_bond_info_list):
+    num_fragments = len(fragment_mol_list)
+    num_torsions = len(rotatable_bond_info_list)
+    edge_info_list = [None] * num_torsions
+
+    for torsion_idx in range(num_torsions):
+        rotatable_bond_info = rotatable_bond_info_list[torsion_idx]
+        begin_atom_idx = rotatable_bond_info[0]
+        end_atom_idx = rotatable_bond_info[1]
+        begin_edge_fragment_idx = None
+        end_edge_fragment_idx = None
+
+        for fragment_idx in range(num_fragments):
+            fragment_mol = fragment_mol_list[fragment_idx]
+            for atom in fragment_mol.GetAtoms():
+                if atom.GetIntProp('internal_atom_idx') == begin_atom_idx:
+                    begin_edge_fragment_idx = fragment_idx
+                    break
+
+            if begin_edge_fragment_idx is not None:
+                break
+
+        for fragment_idx in range(num_fragments):
+            fragment_mol = fragment_mol_list[fragment_idx]
+            for atom in fragment_mol.GetAtoms():
+                if atom.GetIntProp('internal_atom_idx') == end_atom_idx:
+                    end_edge_fragment_idx = fragment_idx
+                    break
+
+            if end_edge_fragment_idx is not None:
+                break
+
+        edge_info_list[torsion_idx] = (begin_edge_fragment_idx, end_edge_fragment_idx)
+
+    molecular_graph = nx.Graph()
+    molecular_graph.add_nodes_from(list(range(num_fragments)))
+    molecular_graph.add_edges_from(edge_info_list)
+
+    fragment_level_list = [None] * num_fragments
+    for fragment_idx in range(num_fragments):
+        fragment_node_levels = nx.shortest_path_length(molecular_graph, fragment_idx).values()
+        max_fragment_node_level = np.max(list(fragment_node_levels))
+        fragment_level_list[fragment_idx] = max_fragment_node_level
+
+    overall_min_level = np.min(fragment_level_list)
+    selected_fragment_idx_list = np.where(fragment_level_list <= (overall_min_level + 2))[0].tolist()
+
+    num_selected_fragments = len(selected_fragment_idx_list)
+    selected_fragment_num_atoms_list = [None] * num_selected_fragments
+
+    for fragment_idx in range(num_selected_fragments):
+        selected_fragment_idx = selected_fragment_idx_list[fragment_idx]
+        fragment_mol = fragment_mol_list[selected_fragment_idx]
+        selected_fragment_num_atoms_list[fragment_idx] = fragment_mol.GetNumAtoms()
+
+    selected_fragment_level_list = np.array(fragment_level_list)[selected_fragment_idx_list].tolist()
+    top_size_fragment_num_atoms = np.max(selected_fragment_num_atoms_list)
+    top_size_selected_idx_array = np.where(selected_fragment_num_atoms_list == top_size_fragment_num_atoms)[0]
+    min_level_top_size_selected_idx = top_size_selected_idx_array[np.argmin(np.array(selected_fragment_level_list)[top_size_selected_idx_array])]
+    min_level_top_size_selected_fragment_idx = np.array(selected_fragment_idx_list)[min_level_top_size_selected_idx]
+
+    return min_level_top_size_selected_fragment_idx

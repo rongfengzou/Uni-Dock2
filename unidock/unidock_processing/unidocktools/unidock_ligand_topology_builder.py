@@ -117,12 +117,6 @@ def build_molecular_graph(mol,
 
     ## Find fragment as the root node
     ##############################################################################
-    num_fragment_atoms_list = [None] * num_fragments
-    for fragment_idx in range(num_fragments):
-        fragment = splitted_mol_list[fragment_idx]
-        num_atoms = fragment.GetNumAtoms()
-        num_fragment_atoms_list[fragment_idx] = num_atoms
-
     root_fragment_idx = None
     if covalent_ligand:
         for fragment_idx in range(num_fragments):
@@ -155,7 +149,7 @@ def build_molecular_graph(mol,
             raise ValueError('Bugs in root finding code for template docking!')
 
     else:
-        root_fragment_idx = np.argmax(num_fragment_atoms_list)
+        root_fragment_idx = utils.root_finding_strategy(splitted_mol_list, rotatable_bond_info_list)
     ##############################################################################
 
     root_fragment = splitted_mol_list[root_fragment_idx]
