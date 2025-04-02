@@ -110,3 +110,5 @@ class UnidockProtocolRunner(object):
                                                       self.working_dir_name)
 
         unidock_pose_writer.generate_docking_pose_sdf()
+
+        self.unidock2_pose_sdf_file_name = unidock_pose_writer.docking_pose_sdf_file_name

@@ -36075,8 +36075,8 @@
     </torsionRule>
     <torsionRule smarts="[a:1][c:2]!@[CX3:3]([NX3H1,NX3H2])=[O:4]">
      <angleList>
-      <angle score="8.880000000000001" tolerance1="20" tolerance2="30" value="0" />
-      <angle score="8.460000000000001" tolerance1="20" tolerance2="30" value="180" />
+      <angle score="8.88" tolerance1="30" tolerance2="30" value="0" />
+      <angle score="8.46" tolerance1="20" tolerance2="30" value="180" />
       <angle score="0.78" tolerance1="20" tolerance2="30" value="-120" />
       <angle score="0.66" tolerance1="20" tolerance2="30" value="60" />
       <angle score="0.52" tolerance1="20" tolerance2="30" value="-60" />
@@ -51958,10 +51958,11 @@
     </histogram2_shifted>
    </torsionRule>
    <!-- from PDB ID 1YGC -->
+   <!-- from PDB ID 1HNN -->
    <torsionRule smarts="[aH1:1][c:2]([aH1])!@[SX4:3][!#1:4]">
     <angleList>
-     <angle score="12.48" tolerance1="30" tolerance2="50" value="0" />
-     <angle score="11.53" tolerance1="30" tolerance2="50" value="180" />
+     <angle score="12.48" tolerance1="40" tolerance2="50" value="0" />
+     <angle score="11.53" tolerance1="40" tolerance2="50" value="180" />
      <angle score="12.48" tolerance1="30" tolerance2="50" value="90" />
      <angle score="11.53" tolerance1="30" tolerance2="50" value="-90" />
     </angleList>
@@ -59225,9 +59226,10 @@
     </histogram2_shifted>
    </torsionRule>
    <!-- reduce torsion value numbers -->
+   <!-- from PDB ID 1HVY -->
    <torsionRule smarts="[$(C=O):1][NX3H1:2]!@[CX4H1:3][H:4]">
     <angleList>
-     <angle score="8.98" tolerance1="30" tolerance2="80" value="0" />
+     <angle score="8.98" tolerance1="40" tolerance2="80" value="0" />
      <angle score="8.98" tolerance1="30" tolerance2="80" value="120" />
      <angle score="8.98" tolerance1="30" tolerance2="80" value="-120" />
     </angleList>

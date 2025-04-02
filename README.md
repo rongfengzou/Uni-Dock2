@@ -16,7 +16,7 @@ chmod +x ./install.sh
 ## Usage
 * command line example:
 ```
-unidock2 -r receptor.pdb -lb ligand_batch.dat --center 5.12 18.35 37.36 --size 30.0 30.0 30.0
+unidock2 -r receptor.pdb -lb ligand_batch.dat --center 5.12 18.35 37.36 --configurations test.yaml
 
 unidock2 -v
 unidock2 -h
@@ -36,22 +36,17 @@ if __name__ == "__main__":
     assert(len(sys.argv) > 3)
     fp_pdb  = os.path.abspath(sys.argv[1])
     fp_sdf  = os.path.abspath(sys.argv[2]) 
-    dp_res  = os.path.abspath(sys.argv[3]) # output directory
+    yaml_file = os.path.abspath(sys.argv[3]) # input configuration
 
-    target_center = (5.12,18.35,37.36)
+    target_center = (5.12, 18.35, 37.36)
     box_size = (30.0, 30.0, 30.0)
 
 
     unidock_protocol_runner = UnidockProtocolRunner(fp_pdb,
                                                     [fp_sdf], # One sdf containing many ligands is allowed; Many sdf files are also allowed.
                                                     target_center=target_center,
-                                                    box_size=box_size,
-                                                    template_docking=False, # constraint docking
-                                                    reference_sdf_file_name=None,
-                                                    core_atom_mapping_dict_list=None,
-                                                    covalent_ligand=False,
-                                                    covalent_residue_atom_info_list=None,
-                                                    working_dir_name=dp_res)
+                                                    option_yaml_file_name=yaml_file)
+
     unidock_protocol_runner.run_unidock_protocol()
 ```
 
@@ -59,26 +54,17 @@ After execution, the output SDF file will contain all poses, scores, and other r
 ### Constraint docking
 ```python
     dp_data = 'align_input'
-    fp_ref = os.path.join(dp_data, "reference.sdf")
     fp_sdf = [os.path.join(dp_data, "new.sdf")]
-    fp_pdb = os.path.join(dp_data, 'protein.pdb')
-    dp_res = "result"
+    yaml_file = os.path.abspath("constraint.yaml") # input configuration
 
-    target_center = (18.974199771881104, 20.620699882507324, 15.10605001449585)
-    box_size = (22.5, 22.5, 22.5)
+    target_center = (18.974, 20.621, 15.106)
+    box_size = (30.0, 30.0, 30.0)
 
     unidock_protocol_runner = UnidockProtocolRunner(fp_pdb,
                                                     fp_sdf,
                                                     target_center=target_center,
-                                                    box_size=box_size,
-                                                    template_docking=True, # constraint docking
-                                                    reference_sdf_file_name=fp_ref,
-                                                    core_atom_mapping_dict_list=None,
-                                                    covalent_ligand=False,
-                                                    covalent_residue_atom_info_list=None,
-                                                    working_dir_name=dp_res,
-                                                    remove_temp_files=True
-                                                    )
+                                                    option_yaml_file_name=yaml_file)
+
     unidock_protocol_runner.run_unidock_protocol()
 ```
 

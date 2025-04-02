@@ -20,23 +20,10 @@ echo "check python path: $(which python)"
 mamba install -y ipython ipykernel ipywidgets requests numba pathos tqdm jinja2 numpy pandas scipy
 mamba install -y rdkit openmm mdanalysis openbabel pyyaml networkx ipycytoscape pdbfixer
 mamba install -y -c nvidia/label/cuda-11.8.0 cuda
-mamba install -y msys_viparr_lpsolve55 ambertools_stable -c http://quetz.dp.tech:8088/get/baymax
+mamba install -y msys_viparr_lpsolve55 ambertools_stable -c http://quetz.dp.tech:8088/get/baymax --no-repodata-use-zst
 
 conda activate $env_name
 echo "check python path: $(which python)"
-
-# DP Tech staff only
-if [[ "$is_dp_staff" == [Yy]* ]]; then
-    echo "Installing DP internal components..."
-    git clone git@git.dp.tech:smallmolecule/fepfixer.git
-    cd fepfixer
-    pip install .
-    cd ..
-    git clone git@git.dp.tech:smallmolecule/uni-fep.git -b 64-further-refactor-uni-fep
-    cd uni-fep/unitop
-    pip install .
-    cd ../..
-fi
 
 # C++ Engine Compilation
 if [[ "$compile_cpp" == [Yy]* ]]; then

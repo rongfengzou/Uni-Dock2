@@ -47,9 +47,9 @@ class UnidockReceptorTopologyBuilder(object):
                 self.covalent_residue_atom_idx_list.append(neighbor_atom_idx)
 
     def prepare_covalent_bond_on_residue(self):
-        covalent_anchor_atom_info = self.covalent_residue_atom_info_list[0]
-        covalent_bond_start_atom_info = self.covalent_residue_atom_info_list[1]
-        covalent_bond_end_atom_info = self.covalent_residue_atom_info_list[2]
+        covalent_anchor_atom_info = tuple(self.covalent_residue_atom_info_list[0])
+        covalent_bond_start_atom_info = tuple(self.covalent_residue_atom_info_list[1])
+        covalent_bond_end_atom_info = tuple(self.covalent_residue_atom_info_list[2])
 
         num_protein_residues = len(self.protein_residue_property_mol_list)
         for residue_idx in range(num_protein_residues):
