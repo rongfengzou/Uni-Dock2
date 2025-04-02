@@ -7,7 +7,7 @@ mamba install -y ipython ipykernel ipywidgets requests numba pathos tqdm jinja2 
 mamba install -y rdkit openmm mdanalysis openbabel pyyaml networkx ipycytoscape pdbfixer
 mamba install -y -c nvidia/label/cuda-11.8.0 cuda # for cuda toolkit
 mamba install -y msys_viparr_lpsolve55 ost_promod fftw gemmi==0.6.6 mdtraj ambertools_stable \
-	-c http://quetz.dp.tech:8088/get/baymax
+	-c http://quetz.dp.tech:8088/get/baymax --no-repodata-use-zst
 
 conda deactivate
 conda activate ud2pub

@@ -1,5 +1,5 @@
 channels:
- - http://repo.xtalpi.io/channel/tags/D
+ - http://quetz.dp.tech:8088/get/baymax
  - conda-forge
  - defaults
 channel_priority: disabled
