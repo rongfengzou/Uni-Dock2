@@ -4,9 +4,6 @@
 read -p "Enter the new conda environment name [ud2pub]: " env_name
 env_name=${env_name:-ud2pub}
 
-read -p "Are you a DP Tech staff (access to private tools)? (y/n) [n]: " is_dp_staff
-is_dp_staff=${is_dp_staff:-n}
-
 read -p "Compile C++ components? (y/n) [y]: " compile_cpp
 compile_cpp=${compile_cpp:-y}
 
@@ -40,6 +37,3 @@ if [[ "$compile_cpp" == [Yy]* ]]; then
 fi
 
 echo "Uni-Dock 2 Installation completed!"
-
-
-
