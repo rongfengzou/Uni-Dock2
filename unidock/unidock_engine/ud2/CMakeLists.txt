@@ -9,10 +9,10 @@ option(BUILD_DOC "build documents" FALSE)
 option(USE_DOUBLE "If TRUE, use double-precision instead of single-precision for the whole project." FALSE)
 
 # ------------------------------ Options for Developers
-set(VERSION_NUMBER 1.0)
+set(VERSION_NUMBER 1.2)
 
 # For Building Stage
-set(CUDAToolkit_ROOT ${CONDA_PREFIX}/bin)
+set(CMAKE_CUDA_COMPILER ${CONDA_PREFIX}/bin/nvcc)
 link_directories(${CONDA_PREFIX}/lib ${CMAKE_SOURCE_DIR}/lib)
 include_directories(${CONDA_PREFIX}/include ${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
 
@@ -24,7 +24,7 @@ set(BIN_NAME ud2)
 set(TESTS_NAME unit_test)
 
 # ------------------------------ Fixed Settings
-project(ud2
+project(${PRJ_NAME}
         LANGUAGES CUDA CXX C)
 
 # use C++ 17 standard for std::filesystem
