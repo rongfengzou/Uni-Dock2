@@ -7,16 +7,20 @@ import numpy as np
 from rdkit import Chem
 from rdkit.Geometry.rdGeometry import Point3D
 
+from unidock.unidock_processing.ligand_topology import utils
+
 class UnidockLigandPoseWriter(object):
     def __init__(self,
                  ligand_mol_list,
                  unidock2_pose_json_file_name_list,
+                 covalent_ligand=False,
                  working_dir_name='.'):
 
         self.ligand_mol_list = ligand_mol_list
         self.num_ligands = len(self.ligand_mol_list)
         self.unidock2_pose_json_file_name_list = unidock2_pose_json_file_name_list
         self.num_unidock2_batches = len(self.unidock2_pose_json_file_name_list)
+        self.covalent_ligand = covalent_ligand
         self.working_dir_name = os.path.abspath(working_dir_name)
 
         self.unidock2_pose_dict = {}
@@ -33,6 +37,10 @@ class UnidockLigandPoseWriter(object):
 
         for ligand_idx in range(self.num_ligands):
             ligand_mol = self.ligand_mol_list[ligand_idx]
+
+            if self.covalent_ligand:
+                ligand_mol, covalent_anchor_atom_info, covalent_atom_info_list = utils.prepare_covalent_ligand_mol(ligand_mol)
+
             ligand_name = ligand_mol.GetProp('_Name')
             num_ligand_atoms = ligand_mol.GetNumAtoms()
             ligand_unidock2_pose_list = self.unidock2_pose_dict[ligand_name]

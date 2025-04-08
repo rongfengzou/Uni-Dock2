@@ -80,7 +80,11 @@ def prepare_covalent_ligand_mol(mol):
             atom_coords_point_3D = deepcopy(conformer.GetAtomPosition(atom_idx))
             atom_coords_dict[atom_info] = atom_coords_point_3D
 
-    covalent_mol = get_mol_without_indices(mol, remove_indices=removed_atom_idx_list, keep_properties=['atom_name', 'residue_name', 'residue_idx', 'chain_idx'])
+    covalent_mol = get_mol_without_indices(mol,
+                                           remove_indices=removed_atom_idx_list,
+                                           keep_properties=['atom_name', 'residue_name', 'residue_idx', 'chain_idx'],
+                                           keep_mol_properties=['_Name'])
+
     num_covalent_atoms = covalent_mol.GetNumAtoms()
     covalent_conformer = Chem.Conformer(num_covalent_atoms)
 

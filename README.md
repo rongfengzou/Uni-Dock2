@@ -41,7 +41,6 @@ if __name__ == "__main__":
     target_center = (5.12, 18.35, 37.36)
     box_size = (30.0, 30.0, 30.0)
 
-
     unidock_protocol_runner = UnidockProtocolRunner(fp_pdb,
                                                     [fp_sdf], # One sdf containing many ligands is allowed; Many sdf files are also allowed.
                                                     target_center=target_center,
@@ -67,4 +66,3 @@ After execution, the output SDF file will contain all poses, scores, and other r
 
     unidock_protocol_runner.run_unidock_protocol()
 ```
-
