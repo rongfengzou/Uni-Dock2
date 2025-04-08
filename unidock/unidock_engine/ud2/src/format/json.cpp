@@ -72,7 +72,8 @@ void split_torsions_into_frags(const std::set<int>& root, const std::vector<UDTo
     std::iota(range.begin(), range.end(), 0);
 
     // Step 1: Identify big torsions and add them as fragments
-    for (int itor : range) {
+    std::vector<int> range_tmp = range;
+    for (int itor : range_tmp) {
         auto& torsion = torsions[itor];
         // Check if either axis atom is in the root set
         if (root.find(torsion.axis[0]) != root.end() || root.find(torsion.axis[1]) != root.end()) {
