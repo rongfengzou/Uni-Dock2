@@ -28,7 +28,6 @@ class UnidockProtocolRunner(object):
 
         self.template_docking = self.unidock2_option_dict['Preprocessing']['template_docking']
         self.reference_sdf_file_name = self.unidock2_option_dict['Preprocessing']['reference_sdf_file_name']
-        self.core_atom_mapping_dict_list = self.unidock2_option_dict['Preprocessing']['core_atom_mapping_dict_list']
         self.covalent_ligand = self.unidock2_option_dict['Preprocessing']['covalent_ligand']
         self.covalent_residue_atom_info_list = self.unidock2_option_dict['Preprocessing']['covalent_residue_atom_info_list']
         self.preserve_receptor_hydrogen = self.unidock2_option_dict['Preprocessing']['preserve_receptor_hydrogen']
@@ -42,6 +41,22 @@ class UnidockProtocolRunner(object):
             os.mkdir(self.unidock2_output_working_dir_name)
         else:
             os.mkdir(self.unidock2_output_working_dir_name)
+
+        raw_core_atom_mapping_dict_list = self.unidock2_option_dict['Preprocessing']['core_atom_mapping_dict_list']
+
+        if raw_core_atom_mapping_dict_list is None:
+            self.core_atom_mapping_dict_list = None
+        else:
+            num_molecules = len(raw_core_atom_mapping_dict_list)
+            self.core_atom_mapping_dict_list = [None] * num_molecules
+
+            for mol_idx in range(num_molecules):
+                raw_core_atom_mapping_dict = raw_core_atom_mapping_dict_list[mol_idx]
+                if raw_core_atom_mapping_dict is None:
+                    self.core_atom_mapping_dict_list[mol_idx] = None
+                else:
+                    core_atom_mapping_dict = {int(reference_atom_idx): int(query_atom_idx) for reference_atom_idx, query_atom_idx in raw_core_atom_mapping_dict.items()}
+                    self.core_atom_mapping_dict_list[mol_idx] = core_atom_mapping_dict
 
     def __prepare_unidock2_input_yaml__(self):
         unidock2_input_dict = {}
@@ -107,7 +122,8 @@ class UnidockProtocolRunner(object):
         unidock2_pose_json_file_name_list = [os.path.join(self.unidock2_output_working_dir_name, unidock2_pose_json_file_name_raw) for unidock2_pose_json_file_name_raw in unidock2_pose_json_file_name_raw_list]
         unidock_pose_writer = UnidockLigandPoseWriter(unidock_ligand_topology_builder.ligand_mol_list,
                                                       unidock2_pose_json_file_name_list,
-                                                      self.working_dir_name)
+                                                      covalent_ligand=self.covalent_ligand,
+                                                      working_dir_name=self.working_dir_name)
 
         unidock_pose_writer.generate_docking_pose_sdf()
 

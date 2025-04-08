@@ -162,6 +162,23 @@ def build_molecular_graph(mol,
         root_atom_idx_list.append(root_atom.GetIntProp('internal_atom_idx'))
 
     ##############################################################################
+
+    ##############################################################################
+    ## Record fragment atom idx
+    num_fragments = len(splitted_mol_list)
+    fragment_atom_idx_nested_list = []
+    for fragment_idx in range(num_fragments):
+        fragment_mol = splitted_mol_list[fragment_idx]
+        num_fragment_atoms = fragment_mol.GetNumAtoms()
+        fragment_atom_idx_list = [None] * num_fragment_atoms
+
+        for atom_idx in range(num_fragment_atoms):
+            atom = fragment_mol.GetAtomWithIdx(atom_idx)
+            fragment_atom_idx_list[atom_idx] = atom.GetIntProp('internal_atom_idx')
+
+        fragment_atom_idx_nested_list[fragment_idx] = fragment_atom_idx_list
+
+    ##############################################################################
     ##############################################################################
     ## Assign atom info
     num_total_atoms = mol.GetNumAtoms()
@@ -233,7 +250,7 @@ def build_molecular_graph(mol,
     ##############################################################################
     ##############################################################################
 
-    return atom_info_nested_list, torsion_info_nested_list, root_atom_idx_list
+    return atom_info_nested_list, torsion_info_nested_list, root_atom_idx_list, fragment_atom_idx_nested_list
 
 def batch_topology_builder_process(ligand_sdf_file_name,
                                    covalent_ligand,
@@ -261,19 +278,20 @@ def batch_topology_builder_process(ligand_sdf_file_name,
         ligand_mol = batch_ligand_mol_list[ligand_idx]
         ligand_name = ligand_mol.GetProp('_Name')
         core_atom_mapping_dict = core_atom_mapping_dict_list[ligand_idx]
-        atom_info_nested_list, torsion_info_nested_list, root_atom_idx_list = build_molecular_graph(ligand_mol,
-                                                                                                    torsion_library_dict,
-                                                                                                    covalent_ligand,
-                                                                                                    template_docking,
-                                                                                                    reference_mol,
-                                                                                                    core_atom_mapping_dict,
-                                                                                                    working_dir_name)
+        atom_info_nested_list, torsion_info_nested_list, root_atom_idx_list, fragment_atom_idx_nested_list = build_molecular_graph(ligand_mol,
+                                                                                                                                   torsion_library_dict,
+                                                                                                                                   covalent_ligand,
+                                                                                                                                   template_docking,
+                                                                                                                                   reference_mol,
+                                                                                                                                   core_atom_mapping_dict,
+                                                                                                                                   working_dir_name)
 
         ligand_info_dict = {}
         ligand_info_dict['ligand_name'] = ligand_name
         ligand_info_dict['atom_info'] = atom_info_nested_list
         ligand_info_dict['torsion_info'] = torsion_info_nested_list
         ligand_info_dict['root_atom_idx'] = root_atom_idx_list
+        ligand_info_dict['fragment_atom_idx'] = fragment_atom_idx_nested_list
         ligand_info_dict_list[ligand_idx] = ligand_info_dict
 
         if remove_temp_files:
@@ -416,5 +434,9 @@ class UnidockLigandTopologyBuilder(object):
             atom_info_nested_list = ligand_info_dict['atom_info']
             torsion_info_nested_list = ligand_info_dict['torsion_info']
             root_atom_idx_list = ligand_info_dict['root_atom_idx']
+            fragment_atom_idx_nested_list = ligand_info_dict['fragment_atom_idx']
 
-            self.total_ligand_info_summary_dict[ligand_name] = {'atoms': atom_info_nested_list, 'torsions': torsion_info_nested_list, 'root_atoms': root_atom_idx_list}
+            self.total_ligand_info_summary_dict[ligand_name] = {'atoms': atom_info_nested_list,
+                                                                'torsions': torsion_info_nested_list,
+                                                                'root_atoms': root_atom_idx_list,
+                                                                'fragment_atom_idx': fragment_atom_idx_nested_list}
