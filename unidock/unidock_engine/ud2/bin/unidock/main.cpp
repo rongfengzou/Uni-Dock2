@@ -77,6 +77,11 @@ int main(int argc, char* argv[])
     dock_param.randomize = get_config_with_err<bool>(config, "Advanced", "randomize", dock_param.randomize);
     dock_param.mc_steps = get_config_with_err<int>(config, "Advanced", "mc_steps", mc_steps);
     dock_param.opt_steps = get_config_with_err<int>(config, "Advanced", "opt_steps", dock_param.opt_steps);
+    if (dock_param.opt_steps < 0){ //heuristic
+        dock_param.opt_steps = -1;
+        spdlog::info("Use heuristic method to decide opt_steps");
+    }
+
     dock_param.refine_steps = get_config_with_err<int>(config, "Advanced", "refine_steps", dock_param.refine_steps);
 
     // box

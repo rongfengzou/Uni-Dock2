@@ -43,7 +43,7 @@ setup(
         ('bin', ['unidock/unidock_engine/build/bin/ud2'])
                              
     ],
-    entry_points={},
+    entry_points={'console_scripts': ['unidock2 = unidock.main:main']},
     include_package_data=True,
     setup_requires=[] + pytest_runner
 )

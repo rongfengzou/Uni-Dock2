@@ -124,7 +124,7 @@ int predict_gpu_flex(UDFlexMolList& udflex_mols, int exhaustiveness){
  * @param device_max_memory
  */
 void run_screening(UDFixMol & dpfix_mol, UDFlexMolList &dpflex_mols, const std::vector<std::string>& fns_flex,
-                   const std::string &dp_out, const DockParam& dock_param, int device_max_memory,
+                   const std::string &dp_out, DockParam& dock_param, int device_max_memory,
                    std::string name_json){
 
     // print docking prameters
@@ -153,13 +153,19 @@ void run_screening(UDFixMol & dpfix_mol, UDFlexMolList &dpflex_mols, const std::
             UDFlexMolList batch_flex_mol_list;
             std::vector<std::string> batch_fns_flex;
 
+            int natom_noH = 0;
             while (num_flex_processed + batch_size < group.size()) {
                 int imol = num_flex_processed + batch_size;
-                batch_flex_mol_list.emplace_back(dpflex_mols[group[imol]]);
+                auto& m = dpflex_mols[group[imol]];
+                batch_flex_mol_list.emplace_back(m);
 
                 // check GPU memory
                 if (predict_gpu_flex(batch_flex_mol_list, dock_param.exhaustiveness) < device_max_memory){
                     batch_fns_flex.emplace_back(fns_flex[group[imol]]);
+                    int natom_noH_tmp = m.vina_types.size() - std::count(m.vina_types.begin(), m.vina_types.end(), VN_TYPE_H);
+                    if (natom_noH_tmp > natom_noH){
+                        natom_noH = natom_noH_tmp;
+                    }
                     batch_size++;
                 }else{
                     batch_flex_mol_list.pop_back();
@@ -175,6 +181,9 @@ void run_screening(UDFixMol & dpfix_mol, UDFlexMolList &dpflex_mols, const std::
             spdlog::info("Perform the Task...");
             auto start = std::chrono::high_resolution_clock::now();
 
+            if (dock_param.opt_steps == -1){ // he
+                dock_param.opt_steps = unsigned(25 + natom_noH / 3);
+            }
             DockTask task(dpfix_mol, batch_flex_mol_list, dock_param, batch_fns_flex, fp_json);
             task.run();
             spdlog::info("Task is done.");
