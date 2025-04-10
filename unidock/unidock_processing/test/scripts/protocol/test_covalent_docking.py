@@ -8,7 +8,7 @@ from unidock.unidock_processing.unidocktools.unidock_protocol_runner import Unid
 
 @pytest.fixture
 def template_configurations():
-    return os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', '..', 'unidock_configurations.yaml')
+    return os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'unidock_configurations.yaml')
 
 @pytest.fixture
 def receptor():

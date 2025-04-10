@@ -4,8 +4,6 @@ import dill as pickle
 import logging
 from multiprocess.pool import Pool
 
-import numpy as np
-
 from rdkit import Chem
 from rdkit.Chem import Descriptors, GetMolFrags, FragmentOnBonds
 from rdkit.Chem.rdPartialCharges import ComputeGasteigerCharges
