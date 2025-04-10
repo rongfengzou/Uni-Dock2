@@ -9,6 +9,7 @@ compile_cpp=${compile_cpp:-y}
 
 # Prepare conda environment
 mamba create -n $env_name python=3.10 -y
+eval "$(mamba shell hook --shell )"
 mamba activate $env_name
 echo "check python path: $(which python)"
 
