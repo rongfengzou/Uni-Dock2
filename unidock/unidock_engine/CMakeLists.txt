@@ -24,9 +24,6 @@ set(BIN_NAME ud2)
 set(TESTS_NAME unit_test)
 
 # ------------------------------ Fixed Settings
-project(${PRJ_NAME}
-        LANGUAGES CUDA CXX C)
-
 # use C++ 17 standard for std::filesystem
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -43,6 +40,8 @@ message("CMAKE_CUDA_ARCHITECTURES: ${CMAKE_CUDA_ARCHITECTURES}")
 
 set(CMAKE_CUDA_SEPARABLE_COMPILATION ON)
 
+project(${PRJ_NAME}
+        LANGUAGES CUDA CXX C)
 
 # Default is a release build
 if(NOT CMAKE_BUILD_TYPE)

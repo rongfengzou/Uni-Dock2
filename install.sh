@@ -26,7 +26,7 @@ echo "check python path: $(which python)"
 # C++ Engine Compilation
 if [[ "$compile_cpp" == [Yy]* ]]; then
     echo "Compiling C++ engine..."
-    mamba install -y cmake=3.31
+    mamba install -y cmake
     cd unidock/unidock_engine
     mkdir build
     cd build
