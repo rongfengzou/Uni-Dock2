@@ -22,8 +22,8 @@ except:
 install_requires = []
 
 version_str = versioneer.get_version()
-if version_str.startswith("base/"):
-    version_str = version_str.partition(".")[2] + ".base"
+if version_str.startswith('base/'):
+    version_str = version_str.partition('.')[2] + '.base'
 setup(
     name='unidock2',
     author='DP Uni-Dock Team',
@@ -41,7 +41,6 @@ setup(
         ('unidock_template', ['unidock/unidock_processing/unidocktools/data/unidock_option_template.yaml',
                               'unidock/unidock_processing/unidocktools/data/tleap_receptor_template.in']),
         ('bin', ['unidock/unidock_engine/build/bin/ud2'])
-                             
     ],
     entry_points={'console_scripts': ['unidock2 = unidock.main:main']},
     include_package_data=True,

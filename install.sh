@@ -14,7 +14,7 @@ conda create -n $env_name python=3.10 -y
 conda activate $env_name
 echo "check python path: $(which python)"
 
-conda install -y mamba==1.5.4 -c conda-forge
+conda install -y mamba -c conda-forge
 mamba install -y ipython ipykernel ipywidgets requests numba pathos tqdm jinja2 numpy pandas scipy
 mamba install -y rdkit openmm mdanalysis openbabel pyyaml networkx ipycytoscape pdbfixer
 mamba install -y -c nvidia/label/cuda-11.8.0 cuda
@@ -30,7 +30,7 @@ if [[ "$compile_cpp" == [Yy]* ]]; then
     cd unidock/unidock_engine
     mkdir build
     cd build
-    cmake ../ud2 -DCMAKE_BUILD_TYPE=Release -DCONDA_PREFIX=$CONDA_PREFIX
+    cmake .. -DCMAKE_BUILD_TYPE=Release -DCONDA_PREFIX=$CONDA_PREFIX
     make ud2 -j
     cd ..
     cd ../..
