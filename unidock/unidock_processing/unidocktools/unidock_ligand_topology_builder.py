@@ -164,7 +164,7 @@ def build_molecular_graph(mol,
     ##############################################################################
     ## Record fragment atom idx
     num_fragments = len(splitted_mol_list)
-    fragment_atom_idx_nested_list = []
+    fragment_atom_idx_nested_list = [None] * num_fragments
     for fragment_idx in range(num_fragments):
         fragment_mol = splitted_mol_list[fragment_idx]
         num_fragment_atoms = fragment_mol.GetNumAtoms()

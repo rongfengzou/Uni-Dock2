@@ -78,7 +78,7 @@ def main():
         raise ValueError('Ligand SDF file input not found !!')
 
     docking_runner = UnidockProtocolRunner(
-        receptor_pdb_file=receptor_file_name,
+        receptor_pdb_file_name=receptor_file_name,
         ligand_sdf_file_name_list=total_ligand_sdf_file_name_list,
         target_center=tuple(args.center),
         option_yaml_file_name=args.configurations
