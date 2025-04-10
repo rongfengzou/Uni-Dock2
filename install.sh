@@ -8,19 +8,14 @@ read -p "Compile C++ components? (y/n) [y]: " compile_cpp
 compile_cpp=${compile_cpp:-y}
 
 # Prepare conda environment
-CONDA_BASE=$(conda info --base)
-source "$CONDA_BASE/etc/profile.d/conda.sh"
-conda create -n $env_name python=3.10 -y
-conda activate $env_name
+mamba create -n $env_name python=3.10 -y
+mamba activate $env_name
 echo "check python path: $(which python)"
 
-conda install -y mamba -c conda-forge
-mamba install -y ipython ipykernel ipywidgets requests numba pathos tqdm jinja2 numpy pandas scipy
+mamba install -y ipython ipykernel ipywidgets requests numba pathos tqdm jinja2 numpy pandas scipy pathos
 mamba install -y rdkit openmm mdanalysis openbabel pyyaml networkx ipycytoscape pdbfixer
-mamba install -y -c nvidia/label/cuda-11.8.0 cuda
-mamba install -y msys_viparr_lpsolve55 ambertools_stable -c http://quetz.dp.tech:8088/get/baymax # --no-repodata-use-zst
+mamba install -y msys_viparr_lpsolve55 ambertools_stable -c http://quetz.dp.tech:8088/get/baymax
 
-conda activate $env_name
 echo "check python path: $(which python)"
 
 # C++ Engine Compilation
