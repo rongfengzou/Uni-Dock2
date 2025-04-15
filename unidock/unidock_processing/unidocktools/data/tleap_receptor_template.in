@@ -2,7 +2,7 @@ source leaprc.protein.ff14SB
 source leaprc.gaff2
 source leaprc.water.tip3p
 
-receptor = loadPdb receptor_fixed.pdb
+receptor = loadPdb receptor_final.pdb
 
 saveAmberParm receptor receptor.prmtop receptor.inpcrd
 
