@@ -9,12 +9,19 @@ option(BUILD_DOC "build documents" FALSE)
 option(USE_DOUBLE "If TRUE, use double-precision instead of single-precision for the whole project." FALSE)
 
 # ------------------------------ Options for Developers
-set(VERSION_NUMBER 1.2)
+set(VERSION_NUMBER 0.2)
 
 # For Building Stage
-set(CMAKE_CUDA_COMPILER ${CONDA_PREFIX}/bin/nvcc)
-link_directories(${CONDA_PREFIX}/lib ${CMAKE_SOURCE_DIR}/lib)
-include_directories(${CONDA_PREFIX}/include ${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
+
+find_program(NVCC_PATH nvcc)
+if(NVCC_PATH)
+    set(CMAKE_CUDA_COMPILER ${NVCC_PATH})
+else()
+    message(FATAL_ERROR "nvcc not found in system PATH")
+endif()
+
+link_directories(${CMAKE_SOURCE_DIR}/lib)
+include_directories(${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
 
 option(ONLY_C "If true, run the whole projects on host to perform tests on C++. " TRUE) # todo
 
@@ -42,6 +49,8 @@ set(CMAKE_CUDA_SEPARABLE_COMPILATION ON)
 
 project(${PRJ_NAME}
         LANGUAGES CUDA CXX C)
+
+set(SPDLOG_FMT_EXTERNAL OFF CACHE BOOL "" FORCE)
 
 # Default is a release build
 if(NOT CMAKE_BUILD_TYPE)
@@ -81,5 +90,3 @@ endif ()
 if (BUILD_DOC)
     add_subdirectory("doc")
 endif ()
-
-

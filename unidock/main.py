@@ -23,6 +23,7 @@ def main():
     parser = argparse.ArgumentParser(
         prog='unidock2',
         description=logo_description,
+        version=__version__,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
 
@@ -32,15 +33,16 @@ def main():
     parser.add_argument('-l', '--ligand',
                         default=None,
                         help='Single ligand structure file in SDF format')
+
     parser.add_argument('-lb', '--ligand_batch',
                         default=None,
                         help='Recorded batch text file of ligand SDF file path')
 
-    parser.add_argument('--center', nargs=3, type=float, metavar=('center_x', 'center_y', 'center_z'),
+    parser.add_argument('-c', '--center', nargs=3, type=float, metavar=('center_x', 'center_y', 'center_z'),
                         default=[0.0, 0.0, 0.0],
                         help='Docking box center coordinates')
 
-    parser.add_argument('-c', '--configurations',
+    parser.add_argument('-cf', '--configurations',
                         default=None,
                         help='Uni-Dock2 configuration file recording all other options')
 
