@@ -23,7 +23,6 @@ def main():
     parser = argparse.ArgumentParser(
         prog='unidock2',
         description=logo_description,
-        version=__version__,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
 

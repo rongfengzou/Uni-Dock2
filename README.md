@@ -79,7 +79,7 @@ The template YAML file path is `unidock/unidock_configurations.yaml`
 For example free docking case, please see `unidock/unidock_processing/test/data/free_docking/molecular_docking`
 The default configurations should be fine in the example `unidock_configurations.yaml` file, just enter the test case folder and run:
 ```
-unidock2 -r 1G9V_protein_water_cleaned.pdb -l ligand_prepared.sdf -c 5.122185664701422 18.327067625467315 37.331720687624006 -cf unidock_configurations.yaml
+unidock2 -r 1G9V_protein_water_cleaned.pdb -l ligand_prepared.sdf -c 5.122 18.327 37.332 -cf unidock_configurations.yaml
 ```
 
 For example constraint docking case, please see `unidock/unidock_processing/test/data/constraint_docking/automatic_atom_mapping` for automatic atom mapping case and `unidock/unidock_processing/test/data/constraint_docking/manual_atom_mapping` for manual specified mapping case.
