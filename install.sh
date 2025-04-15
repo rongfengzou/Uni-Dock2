@@ -14,8 +14,8 @@ mamba activate $env_name
 echo "check python path: $(which python)"
 
 mamba install -y ipython ipykernel ipywidgets requests numba pathos tqdm jinja2 numpy pandas scipy pathos
-mamba install -y rdkit openmm mdanalysis openbabel pyyaml networkx ipycytoscape pdbfixer
-mamba install -y -c nvidia/label/cuda-11.8.0 cuda
+mamba install -y rdkit openmm mdanalysis openbabel pyyaml networkx ipycytoscape pdbfixer cuda-version=12.1
+#mamba install -y -c nvidia/label/cuda-11.8.0 cuda
 mamba install -y msys_viparr_lpsolve55 ambertools_stable -c http://quetz.dp.tech:8088/get/baymax
 
 echo "check python path: $(which python)"
@@ -23,7 +23,7 @@ echo "check python path: $(which python)"
 # C++ Engine Compilation
 if [[ "$compile_cpp" == [Yy]* ]]; then
     echo "Compiling C++ engine..."
-    mamba install -y cmake
+#    mamba install -y cmake
     cd unidock/unidock_engine
     mkdir build
     cd build

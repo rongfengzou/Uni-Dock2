@@ -12,9 +12,16 @@ option(USE_DOUBLE "If TRUE, use double-precision instead of single-precision for
 set(VERSION_NUMBER 1.2)
 
 # For Building Stage
-set(CMAKE_CUDA_COMPILER ${CONDA_PREFIX}/bin/nvcc)
-link_directories(${CONDA_PREFIX}/lib ${CMAKE_SOURCE_DIR}/lib)
-include_directories(${CONDA_PREFIX}/include ${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
+
+find_program(NVCC_PATH nvcc)
+if(NVCC_PATH)
+    set(CMAKE_CUDA_COMPILER ${NVCC_PATH})
+else()
+    message(FATAL_ERROR "nvcc not found in system PATH")
+endif()
+
+link_directories(${CMAKE_SOURCE_DIR}/lib)
+include_directories(${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
 
 option(ONLY_C "If true, run the whole projects on host to perform tests on C++. " TRUE) # todo
 
@@ -81,5 +88,3 @@ endif ()
 if (BUILD_DOC)
     add_subdirectory("doc")
 endif ()
-
-
