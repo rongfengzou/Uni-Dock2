@@ -1,6 +1,8 @@
 *.o
 __pycache__
 build/
+cmake-build-release/
+cmake-build-debug/
 .cache
 test/ligands
 test/results
