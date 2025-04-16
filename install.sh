@@ -39,7 +39,7 @@ echo "check python path: $(which python)"
 if [[ "$compile_cpp" == [Yy]* ]]; then
     echo "Compiling C++ engine..."
     conda install -y cmake=3.27
-    conda install nvidia/label/cuda-12.1.1::cuda-nvcc nvidia/label/cuda-12.1.1::cuda-cudar nvidia/label/cuda-12.1.1::libcurand
+    conda install nvidia/label/cuda-12.1.1::cuda-nvcc nvidia/label/cuda-12.1.1::cuda-cudart nvidia/label/cuda-12.1.1::libcurand
     cd unidock/unidock_engine
     mkdir build
     cd build
