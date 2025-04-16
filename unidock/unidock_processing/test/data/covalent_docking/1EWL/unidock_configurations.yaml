@@ -9,7 +9,7 @@ Advanced:
   rmsd_limit: 1.0
   seed: 1234567
 Hardware:
-  gpu_device_id: 1
+  gpu_device_id: 0
   max_gpu_memory: 0
   ncpu: 12
 Settings:
@@ -23,7 +23,7 @@ Preprocessing:
   reference_sdf_file_name: null
   core_atom_mapping_dict_list: null
   covalent_ligand: true
-  covalent_residue_atom_info_list: [["A", "CYS", 25, "CA"], ["A", "CYS", 25, "CB"], ["A", "CYS", 25, "SG"]]
+  covalent_residue_atom_info_list: [["", "CYX", 25, "CA"], ["", "CYX", 25, "CB"], ["", "CYX", 25, "SG"]]
   preserve_receptor_hydrogen: true
   remove_temp_files: true
   working_dir_name: .

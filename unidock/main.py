@@ -20,9 +20,9 @@ logo_description = r"""
 """
 
 def main():
+    print(logo_description)
     parser = argparse.ArgumentParser(
         prog='unidock2',
-        description=logo_description,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
 

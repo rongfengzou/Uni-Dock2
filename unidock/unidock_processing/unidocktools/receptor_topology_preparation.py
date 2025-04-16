@@ -15,6 +15,7 @@ class ReceptorTopologyPreparation(object):
         self.working_dir_name = os.path.abspath(working_dir_name)
         self.receptor_cleaned_pdb_file_name = os.path.join(self.working_dir_name, 'receptor_cleaned.pdb')
         self.receptor_fixed_pdb_file_name = os.path.join(self.working_dir_name, 'receptor_fixed.pdb')
+        self.receptor_final_pdb_file_name = os.path.join(self.working_dir_name, 'receptor_final.pdb')
         self.receptor_prmtop_file_name = os.path.join(self.working_dir_name, 'receptor.prmtop')
         self.receptor_inpcrd_file_name = os.path.join(self.working_dir_name, 'receptor.inpcrd')
         self.receptor_dms_file_name = os.path.join(self.working_dir_name, 'receptor_parameterized.dms')
@@ -35,6 +36,13 @@ class ReceptorTopologyPreparation(object):
 
         with open(self.receptor_fixed_pdb_file_name, 'w') as receptor_fixed_pdb_file:
             PDBFile.writeFile(fixer.topology, fixer.positions, receptor_fixed_pdb_file)
+
+        fixed_ag = mda.Universe(self.receptor_fixed_pdb_file_name).atoms
+        for residue in fixed_ag.residues:
+            if residue.resname == 'CYS':
+                residue.resname = 'CYX'
+
+        fixed_ag.write(self.receptor_final_pdb_file_name)
 
         tleap_source_file_name = os.path.join(os.path.dirname(__file__), 'data', 'tleap_receptor_template.in')
         tleap_destination_file_name = os.path.join(self.working_dir_name, 'tleap.in')
