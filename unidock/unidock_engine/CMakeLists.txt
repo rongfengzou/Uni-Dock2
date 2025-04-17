@@ -12,14 +12,6 @@ option(USE_DOUBLE "If TRUE, use double-precision instead of single-precision for
 set(VERSION_NUMBER 0.2)
 
 # For Building Stage
-
-find_program(NVCC_PATH nvcc)
-if(NVCC_PATH)
-    set(CMAKE_CUDA_COMPILER ${NVCC_PATH})
-else()
-    message(FATAL_ERROR "nvcc not found in system PATH")
-endif()
-
 link_directories(${CMAKE_SOURCE_DIR}/lib)
 include_directories(${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
 
