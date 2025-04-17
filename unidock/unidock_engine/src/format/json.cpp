@@ -391,9 +391,6 @@ void write_poses_to_json(std::string fp_json, const std::vector<std::string>& fl
     }
 
     // write to file
-    // rj::StringBuffer buffer;
-    // rj::PrettyWriter<rj::StringBuffer> writer(buffer);
-    // doc.Accept(writer);
     char writeBuffer[65536];
     FILE* f = fopen(fp_json.c_str(), "w");
     rj::FileWriteStream os(f, writeBuffer, sizeof(writeBuffer));
