@@ -3,18 +3,21 @@ import json
 import yaml
 from shutil import rmtree
 
+from rdkit import Chem
+
 from unidock.unidock_processing.unidocktools.unidock_receptor_topology_builder import UnidockReceptorTopologyBuilder
 from unidock.unidock_processing.unidocktools.unidock_ligand_topology_builder import UnidockLigandTopologyBuilder
 from unidock.unidock_processing.unidocktools.unidock_ligand_pose_writer import UnidockLigandPoseWriter
+from unidock.unidock_processing.ligand_topology import utils
 
 class UnidockProtocolRunner(object):
     def __init__(self,
-                 receptor_pdb_file_name,
+                 receptor_file_name,
                  ligand_sdf_file_name_list,
                  target_center,
                  option_yaml_file_name=None):
 
-        self.receptor_pdb_file_name = receptor_pdb_file_name
+        self.receptor_file_name = receptor_file_name
         self.ligand_sdf_file_name_list = ligand_sdf_file_name_list
         self.target_center = target_center
 
@@ -58,6 +61,10 @@ class UnidockProtocolRunner(object):
                     core_atom_mapping_dict = {int(reference_atom_idx): int(query_atom_idx) for reference_atom_idx, query_atom_idx in raw_core_atom_mapping_dict.items()}
                     self.core_atom_mapping_dict_list[mol_idx] = core_atom_mapping_dict
 
+        if self.template_docking and self.target_center == (0.0, 0.0, 0.0):
+            reference_mol = Chem.SDMolSupplier(self.reference_sdf_file_name, removeHs=True)[0]
+            self.target_center = tuple(utils.calculate_center_of_mass(reference_mol))
+
     def __prepare_unidock2_input_yaml__(self):
         unidock2_input_dict = {}
         unidock2_input_dict['Advanced'] = self.unidock2_option_dict['Advanced']
@@ -81,7 +88,7 @@ class UnidockProtocolRunner(object):
 
     def run_unidock_protocol(self):
         ## prepare receptor
-        unidock_receptor_topology_builder = UnidockReceptorTopologyBuilder(self.receptor_pdb_file_name,
+        unidock_receptor_topology_builder = UnidockReceptorTopologyBuilder(self.receptor_file_name,
                                                                            prepared_hydrogen=self.preserve_receptor_hydrogen,
                                                                            covalent_residue_atom_info_list=self.covalent_residue_atom_info_list,
                                                                            working_dir_name=self.working_dir_name)
