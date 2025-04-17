@@ -77,9 +77,9 @@ class UnidockProtocolRunner(object):
         unidock2_input_dict['Outputs']['dir'] = self.unidock2_output_working_dir_name
 
         unidock2_input_dict['Settings'] = self.unidock2_option_dict['Settings']
-        unidock2_input_dict['Settings']['center_x'] = self.target_center[0]
-        unidock2_input_dict['Settings']['center_y'] = self.target_center[1]
-        unidock2_input_dict['Settings']['center_z'] = self.target_center[2]
+        unidock2_input_dict['Settings']['center_x'] = float(self.target_center[0])
+        unidock2_input_dict['Settings']['center_y'] = float(self.target_center[1])
+        unidock2_input_dict['Settings']['center_z'] = float(self.target_center[2])
         unidock2_input_dict['Settings']['constraint_docking'] = self.template_docking or self.covalent_ligand
 
         self.unidock2_input_yaml_file_name = os.path.join(self.working_dir_name, 'system_inputs_unidock2.yaml')

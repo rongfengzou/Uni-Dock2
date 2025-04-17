@@ -93,6 +93,8 @@ def test_automatic_case(receptor_automatic_case,
     unidock_protocol_runner.run_unidock_protocol()
 
     assert os.path.exists(unidock_protocol_runner.unidock2_pose_sdf_file_name)
+    assert os.path.getsize(unidock_protocol_runner.unidock2_pose_sdf_file_name) > 0
+
     shutil.rmtree(working_dir_name, ignore_errors=True)
 
 def test_manual_case(receptor_manual_case,
@@ -130,4 +132,6 @@ def test_manual_case(receptor_manual_case,
     unidock_protocol_runner.run_unidock_protocol()
 
     assert os.path.exists(unidock_protocol_runner.unidock2_pose_sdf_file_name)
+    assert os.path.getsize(unidock_protocol_runner.unidock2_pose_sdf_file_name) > 0
+
     shutil.rmtree(working_dir_name, ignore_errors=True)
