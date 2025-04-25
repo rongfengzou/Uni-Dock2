@@ -9,14 +9,13 @@ find_package(CUDAToolkit REQUIRED)
 
 pybind11_add_module(${PYBIND_NAME} unidock_engine.cpp)
 
-target_link_libraries(${PYBIND_NAME} PRIVATE CUDA::cudart)
+target_link_libraries(${PYBIND_NAME} PRIVATE CUDA::cudart ${LIB_NAME})
 target_include_directories(
     ${PYBIND_NAME}
     PUBLIC
     ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES} 
-    ${CMAKE_SOURCE_DIR}/src 
+    ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/include
-    ${CMAKE_SOURCE_DIR}/bin/unidock
 )
 
 # install(TARGETS unidock_engine DESTINATION .)
