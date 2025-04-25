@@ -11,7 +11,7 @@
 #include "model/model.h"
 #include "format/json.h"
 #include "myutils/errors.h"
-#include "screening.h"
+#include "screening/screening.h"
 
 
 namespace py = pybind11;

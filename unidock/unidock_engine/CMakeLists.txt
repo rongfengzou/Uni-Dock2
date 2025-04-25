@@ -72,7 +72,7 @@ endif ()
 add_subdirectory("src")
 
 # python binding
-add_subdirectory("python")
+add_subdirectory("api/python")
 
 if (BUILD_BIN)
     add_subdirectory("bin")
