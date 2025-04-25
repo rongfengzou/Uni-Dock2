@@ -45,6 +45,8 @@ project(${PRJ_NAME}
 
 set(SPDLOG_FMT_EXTERNAL OFF CACHE BOOL "" FORCE)
 
+find_package(CUDAToolkit REQUIRED)
+
 # Default is a release build
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
