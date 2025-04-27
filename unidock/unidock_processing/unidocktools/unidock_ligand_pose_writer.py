@@ -7,7 +7,7 @@ import numpy as np
 from rdkit import Chem
 from rdkit.Geometry.rdGeometry import Point3D
 
-from unidock.unidock_processing.ligand_topology import utils
+from unidock_processing.ligand_topology import utils
 
 class UnidockLigandPoseWriter(object):
     def __init__(self,

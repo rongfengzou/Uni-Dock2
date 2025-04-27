@@ -2,6 +2,8 @@
 requires = [
     "setuptools>=64",
     "setuptools-scm>=8",
+    "cmake==3.27",
+    # "pybind11",
 ]
 build-backend = "setuptools.build_meta"
 
@@ -19,26 +21,21 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-dependencies = []
 dynamic = ["version"]
 
-[project.scripts]
-unidock2 = "unidock.main:main"
+[tool.setuptools_scm]
 
-# [tool.setuptools.packages.find]
-# where = ["unidock"]
-# include = ["*"]
-# exclude = ["test"]
+[project.scripts]
+unidock2 = "unidock_processing.main:main"
+
+[tool.setuptools.packages.find]
+where = ["unidock"]
+include = ["unidock_processing"]
 
 [tool.setuptools.package-data]
-"*" = ["*.xml"]
-
+unidock_processing = ["*.xml", "*.in"]
 
 [tool.coverage.run]
 omit = [
     "*/tests/*",
-    "unidock/__version__.py",
     ]
-
-[tool.setuptools_scm]
-version_file = "src/unidock/_version.py"

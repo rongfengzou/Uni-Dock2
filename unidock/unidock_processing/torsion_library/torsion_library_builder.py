@@ -3,7 +3,7 @@ import dill as pickle
 from rdkit import Chem
 import xml.etree.ElementTree as ET
 
-from unidock.unidock_processing.torsion_library import utils
+from unidock_processing.torsion_library import utils
 
 class TorsionLibraryBuilder(object):
     def __init__(self, working_dir_name):

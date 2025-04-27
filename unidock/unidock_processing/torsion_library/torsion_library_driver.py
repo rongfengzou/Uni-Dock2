@@ -3,8 +3,8 @@ from copy import deepcopy
 from rdkit import Chem
 from rdkit.Geometry.rdGeometry import Point3D
 
-from unidock.unidock_processing.torsion_library.utils import get_torsion_atom_idx_tuple, get_torsion_mobile_atom_idx_list, rotate_torsion_angle
-from unidock.unidock_processing.torsion_library.torsion_rule_matcher import TorsionRuleMatcher
+from unidock_processing.torsion_library.utils import get_torsion_atom_idx_tuple, get_torsion_mobile_atom_idx_list, rotate_torsion_angle
+from unidock_processing.torsion_library.torsion_rule_matcher import TorsionRuleMatcher
 
 class TorsionLibraryDriver(object):
     def __init__(self,
