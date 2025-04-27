@@ -1,0 +1,107 @@
+name: Uni-Dock2 CI/CD
+on:
+  push:
+    branches:
+      - '**ci**'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  flake8:
+    continue-on-error: true
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+          python-version: 3.10
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8
+
+    - name: Run flake8 formating
+      working-directory: ./unidock/unidock_processing
+      run: |
+        flake8 src --exit-zero
+
+  pyright:
+    continue-on-error: true
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+          python-version: 3.10
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyright
+
+    - name: Run pyright check
+      id: pyright_check
+      working-directory: ./unidock/unidock_processing
+      run: |
+        pyright src
+
+  tests:
+    if: ${{ always() }}
+    needs: [flake8,pyright]
+    runs-on: nvidia
+    container:
+      image: nvidia/cuda:12.8.1-devel-ubuntu24.04
+      options: --gpus all
+    steps:
+    - name: checkout repo
+      uses: actions/checkout@v4
+
+    - name: install c++ engine
+      working-directory: ./unidock/unidock_engine
+      run: |
+        apt-get update && apt-get install -y build-essential cmake libboost-all-dev ninja-build git wget
+        mkdir build
+        cd build
+        cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
+        cmake --build .
+        cmake --install .
+        cd ..
+
+    - name: install python tools
+      working-directory: ./unidock/unidock_processing
+      run: |
+        wget --quiet -O conda.sh https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh
+        bash conda.sh -b -p /opt/conda
+        rm conda.sh
+        export PATH=/opt/conda/bin:$PATH
+
+        mamba install -y ipython ipykernel ipywidgets requests numba pathos tqdm jinja2 numpy pandas scipy pathos rdkit openmm mdanalysis openbabel pyyaml networkx ipycytoscape pdbfixer cuda-version=12.1
+        mamba install -y msys_viparr_lpsolve55 ambertools_stable -c http://quetz.dp.tech:8088/get/baymax
+        pip install .
+
+    - name: run c++ engine tests
+      working-directory: ./unidock/unidock_engine
+      run: |
+        export PATH=/opt/conda/bin:$PATH
+        pip install pytest pytest-cov
+        pytest tests/ut -vv --cov --cov-report term
+
+    - name: run python unit-test
+      working-directory: ./unidock/unidock_processing
+      run: |
+        export PATH=/opt/conda/bin:$PATH
+        pip install pytest pytest-cov
+        pytest tests/scripts/ligand_topology -vv --cov --cov-report term
+        pytest tests/scripts/receptor_topology -vv --cov --cov-report term
+
+    - name: run python application protocol test
+      working-directory: ./unidock/unidock_processing
+      run: |
+        export PATH=/opt/conda/bin:$PATH
+        pytest tests/scripts/protocol -vv --cov --cov-report term
