@@ -27,7 +27,7 @@ jobs:
     - name: Run flake8 formating
       working-directory: ./unidock/unidock_processing
       run: |
-        flake8 src --exit-zero
+        flake8 . --exit-zero
 
   pyright:
     continue-on-error: true
@@ -49,7 +49,7 @@ jobs:
       id: pyright_check
       working-directory: ./unidock/unidock_processing
       run: |
-        pyright src
+        pyright .
 
   tests:
     if: ${{ always() }}
