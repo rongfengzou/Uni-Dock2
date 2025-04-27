@@ -1,0 +1,44 @@
+[build-system]
+requires = [
+    "setuptools>=64",
+    "setuptools-scm>=8",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "unidock2"
+description = "Uni-Dock molecular docking engine"
+readme = "README.md"
+authors = [
+    {name = "DP Uni-Dock Team"}
+]
+license = {text = "MIT"}
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = []
+dynamic = ["version"]
+
+[project.scripts]
+unidock2 = "unidock.main:main"
+
+# [tool.setuptools.packages.find]
+# where = ["unidock"]
+# include = ["*"]
+# exclude = ["test"]
+
+[tool.setuptools.package-data]
+"*" = ["*.xml"]
+
+
+[tool.coverage.run]
+omit = [
+    "*/tests/*",
+    "unidock/__version__.py",
+    ]
+
+[tool.setuptools_scm]
+version_file = "src/unidock/_version.py"
