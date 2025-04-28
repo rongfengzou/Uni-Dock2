@@ -1,0 +1,26 @@
+[build-system]
+requires = [
+    "scikit-build-core",
+    "pybind11",
+]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "unidock_engine"
+description = "Uni-Dock molecular docking engine"
+readme = "README.md"
+authors = [
+    {name = "DP Uni-Dock Team"}
+]
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: C++",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dynamic = ["version"]
+
+[tool.scikit-build]
+cmake.version = "~=3.27"
+build.tool-args = ["-j4"]
+wheel.install-dir = "unidock_engine/api/python"

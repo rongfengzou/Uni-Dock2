@@ -24,3 +24,4 @@ unidock_tools/dist/*
 *.egg-info
 _version.py
 test_ud2
+setup.py.depre

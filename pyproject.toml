@@ -2,13 +2,12 @@
 requires = [
     "setuptools>=64",
     "setuptools-scm>=8",
-    "cmake==3.27",
 ]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "unidock2"
-description = "Uni-Dock molecular docking engine"
+name = "unidock_processing"
+description = "Uni-Dock molecular docking Processor"
 readme = "README.md"
 authors = [
     {name = "DP Uni-Dock Team"}
@@ -32,7 +31,7 @@ where = ["unidock"]
 include = ["unidock_processing*"]
 
 [tool.setuptools.package-data]
-unidock_processing = ["*.xml", "*.in"]
+"*" = ["*.xml", "*.in"]
 
 [tool.coverage.run]
 omit = [

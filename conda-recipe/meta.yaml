@@ -33,7 +33,8 @@ requirements:
 
   host:
     - python
-    # - numpy
+    - pip
+    - scikit-build-core >=0.2.0
     # - cython
     - setuptools
     - cuda-version {{ cuda_compiler_version }} # [(cuda_compiler_version or "None") != "None"]
