@@ -40,7 +40,7 @@ setup(
                              'unidock/unidock_processing/torsion_library/data/torsion_library_CDPKit.xml']),
         ('unidock_template', ['unidock/unidock_processing/unidocktools/data/unidock_option_template.yaml',
                               'unidock/unidock_processing/unidocktools/data/tleap_receptor_template.in']),
-        ('bin', ['unidock/unidock_engine/build/bin/ud2'])
+        ('bin', ['unidock/unidock_engine/build/bin/ud2']),
     ],
     entry_points={'console_scripts': ['unidock2 = unidock.main:main']},
     include_package_data=True,

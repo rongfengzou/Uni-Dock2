@@ -1,11 +1,12 @@
 # UD2
 
-Uni-Dock 2.0 C++ engine, working together with unidock_process.
+Uni-Dock2 C++ engine, working together with unidock_process.
 
 This document serves for Developers, not Users.
 
 ## Requirements
 * CUDA 11.8+
+* GLIB 2.31+ (Ubuntu 20.04+); GLIB 2.35+ (Ubuntu 22.04+) for unit tests
 
 ## Compilation
 There will be a binary `ud2` under `build/bin` and the library it relies on: `build/src/libud_lib.so`.
