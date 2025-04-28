@@ -12,6 +12,11 @@ target_include_directories(${PYBIND_NAME}
     ${CMAKE_SOURCE_DIR}/src
 )
 
-# install(TARGETS unidock_engine DESTINATION .)
+# install not specified here
+
+# lib rpath: suppose conda_env/lib/pythonX.Y/site-packages/my_package/unidock_engine.AABB.so
+set_target_properties(${PYBIND_NAME} PROPERTIES
+        INSTALL_RPATH "$ORIGIN/../../../../"
+)
 
 message("      [Sub-Section Done]  PYTHON BINDING !")

@@ -23,6 +23,11 @@ set(BIN_NAME ud2)
 set(PYBIND_NAME unidock_engine)
 set(TESTS_NAME unit_test)
 
+# install
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT) # default path is
+    set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install CACHE PATH "Installation root" FORCE)
+endif()
+
 # ------------------------------ Fixed Settings
 # use C++ 17 standard for std::filesystem
 set(CMAKE_CXX_STANDARD 17)
