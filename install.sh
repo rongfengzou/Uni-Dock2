@@ -29,8 +29,8 @@ else
     echo -e "Environment verified."
 fi
 
-conda install -y ipython ipykernel ipywidgets requests numba pathos tqdm jinja2 numpy pandas scipy pathos
-conda install -y rdkit openmm mdanalysis openbabel pyyaml networkx ipycytoscape pdbfixer cuda-version=12.1
+conda install -y ipython ipykernel ipywidgets requests pathos tqdm numpy pandas scipy pathos
+conda install -y rdkit openmm mdanalysis openbabel pyyaml networkx pdbfixer cuda-version=12.1
 conda install -y msys_viparr_lpsolve55 ambertools_stable -c http://quetz.dp.tech:8088/get/baymax --no-repodata-use-zst
 
 echo "check python path: $(which python)"

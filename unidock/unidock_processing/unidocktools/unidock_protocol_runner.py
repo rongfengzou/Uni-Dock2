@@ -71,14 +71,9 @@ class UnidockProtocolRunner(object):
 
         self.working_dir_name: str = os.path.abspath(working_dir_name)
         self.unidock2_output_working_dir_name: str = os.path.join(self.working_dir_name, 'unidock2_output')
+        os.makedirs(self.unidock2_output_working_dir_name, exist_ok=True)
         self.unidock2_input_json_file_name: str = ""
         self.unidock2_pose_sdf_file_name: str = ""
-
-        if os.path.isdir(self.unidock2_output_working_dir_name):
-            rmtree(self.unidock2_output_working_dir_name, ignore_errors=True)
-            os.mkdir(self.unidock2_output_working_dir_name)
-        else:
-            os.mkdir(self.unidock2_output_working_dir_name)
 
         # Process core atom mapping dict list
         if core_atom_mapping_dict_list is None:

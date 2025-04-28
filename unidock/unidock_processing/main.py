@@ -4,7 +4,6 @@ import argparse
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from unidock_processing.unidocktools.unidock_protocol_runner import UnidockProtocolRunner
-from unidock import __version__
 
 logo_description = r"""
 
@@ -44,10 +43,6 @@ def main():
     parser.add_argument('-cf', '--configurations',
                         default=None,
                         help='Uni-Dock2 configuration file recording all other options')
-
-    parser.add_argument('-v', '--version', action='version',
-                        version=f'%(prog)s {__version__}',
-                        help='Show program version')
 
     args = parser.parse_args()
 

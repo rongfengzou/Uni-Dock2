@@ -28,7 +28,7 @@ class CMakeBuild(build_ext):
             ["cmake", ext.sourcedir], cwd=build_temp, check=True
         )
         subprocess.run(
-            ["make", "-j"], cwd=build_temp, check=True
+            ["make", "-j", "pipeline", "ud2"], cwd=build_temp, check=True
         )
 
         shutil.copytree(build_temp, Path(self.build_lib) / ext.name)
