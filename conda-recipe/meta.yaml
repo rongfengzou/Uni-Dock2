@@ -19,15 +19,15 @@ build:
 
 requirements:
   build:
-    - python
-    - cross-python_{{ target_platform }}
-    - cython                                 # [build_platform != target_platform]
+    # - python
+    # - cross-python_{{ target_platform }}
+    # - cython                                 # [build_platform != target_platform]
     - {{ compiler('c') }}
     - {{ stdlib("c") }}
     - {{ compiler('cxx') }}
     - {{ compiler('cuda') }} # [(linux or win) and cuda_compiler != "None"]
-    - cuda-version {{ cuda_compiler_version }} # [(cuda_compiler_version or "None") != "None"]
-    - cmake = 3.27
+    # - cuda-version {{ cuda_compiler_version }} # [(cuda_compiler_version or "None") != "None"]
+    - cmake =3.27
     - make
     - pybind11
 
@@ -36,10 +36,11 @@ requirements:
     # - numpy
     # - cython
     - setuptools
-    - cuda-version {{ cuda_compiler_version }}
+    - cuda-version {{ cuda_compiler_version }} # [(cuda_compiler_version or "None") != "None"]
     {% if cuda_compiler_version != "None" %}
     - libcurand-dev
     - cuda-cudart-dev
+    - cuda-driver-dev  # [linux]
     {% endif %}
   run:
     - pyyaml

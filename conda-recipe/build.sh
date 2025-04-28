@@ -1,3 +1,5 @@
-set -e -x
+#!/bin/bash
+
+set -ex
 
 $PYTHON -m pip install .

@@ -9,9 +9,10 @@ from setuptools.command.build_ext import build_ext
 
 
 class CMakeExtension(Extension):
-    def __init__(self, name: str, sourcedir: str = "") -> None:
+    def __init__(self, name: str, sourcedir: str = "", namespace: str = "") -> None:
         super().__init__(name, sources=[])
         self.sourcedir = os.fspath(Path(sourcedir).resolve())
+        self.namespace = namespace
 
 
 class CMakeBuild(build_ext):
@@ -25,13 +26,13 @@ class CMakeBuild(build_ext):
             build_temp.mkdir(parents=True)
 
         subprocess.run(
-            ["cmake", ext.sourcedir], cwd=build_temp, check=True
+            ["cmake", ext.sourcedir, "-DBUILD_TEST=FALSE"], cwd=build_temp, check=True
         )
         subprocess.run(
-            ["make", "-j", "pipeline", "ud2"], cwd=build_temp, check=True
+            ["make", "-j"], cwd=build_temp, check=True
         )
 
-        shutil.copytree(build_temp, Path(self.build_lib) / ext.name)
+        shutil.copytree(build_temp, Path(self.build_lib) / ext.namespace / ext.name)
 
 
 setup(

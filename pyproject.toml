@@ -3,7 +3,6 @@ requires = [
     "setuptools>=64",
     "setuptools-scm>=8",
     "cmake==3.27",
-    # "pybind11",
 ]
 build-backend = "setuptools.build_meta"
 
@@ -30,7 +29,7 @@ unidock2 = "unidock_processing.main:main"
 
 [tool.setuptools.packages.find]
 where = ["unidock"]
-include = ["unidock_processing"]
+include = ["unidock_processing*"]
 
 [tool.setuptools.package-data]
 unidock_processing = ["*.xml", "*.in"]
