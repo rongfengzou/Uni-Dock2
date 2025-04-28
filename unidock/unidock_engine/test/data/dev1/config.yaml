@@ -1,6 +1,3 @@
-# root_dir is the one containing this yaml
-# For item with a type tag (!!), the value is REQUIRED
-
 Advanced:
   seed: !!int 1234567 # explicit random seed
   exhaustiveness: !!int 3 # MC candidates count (roughly proportional to time). If given, value for search_mode will be overridden
@@ -35,7 +32,7 @@ Settings:
   size_z: !!float 30
 
 Outputs:
-  dir: !!str ./result     # output directory, default is root_dir/result
+  dir: !!str ./result     # output directory
 
 Inputs:
   json: !!str ./actives.json  # json file containing receptor & ligands info. If given the following three items will be ignored

@@ -1,12 +1,18 @@
 # UD2
 
-Uni-Dock 2.0 C++ engine, working together with unidock_process.
+Uni-Dock2 C++ engine, working together with unidock_process.
 
 This document serves for Developers, not Users.
 
 ## Requirements
 * CUDA 11.8+
-* CUDA Architecture 70+ 
+* GLIB 2.31+ (Ubuntu 20.04+); GLIB 2.35+ (Ubuntu 22.04+) for unit tests
+
+## Compilation
+There will be a binary `ud2` under `build/bin` and the library it relies on: `build/src/libud_lib.so`.
+
+Assure the library path  
+
 
 ## How to run it
 The input you should prepare is a config.yaml file, definition of which can be found 
@@ -54,19 +60,18 @@ be performed without optimization of each pose.
 clustering/filtering will still be performed.
 No refinement.
 
-#### benchmark [Not Loaded]
-This is a convenient way to perform benchmark test to check the correctness and speed of UD2.
-By given many receptor&best_ligand_pose data, UD2 will first perform "screen" task to find the 
-best `num_pose` poses and record their predicted affinity and RMSD from the expected best pose,
-along with the total time cost.
-
-Users could perform further analysis based on these data.
-
 #### free
 If the pre-defined tasks can't meet your need, pls use `screen` as the task type, and change
 detailed settings in `Advanced` as you like, since all provided parameters will take effect for 
 `screen` task.
 
+#### benchmark [Not Loaded]
+This is a convenient way to perform benchmark test to check the correctness and speed of UD2.
+By given many receptor&best_ligand_pose data, UD2 will first perform "screen" task to find the
+best `num_pose` poses and record their predicted affinity and RMSD from the expected best pose,
+along with the total time cost.
+
+Users could perform further analysis based on these data.
 
 ## Source Code Illustration
 * **src** Contains basic source code files.
@@ -77,7 +82,7 @@ detailed settings in `Advanced` as you like, since all provided parameters will 
 * **include** Contains third-party header files.
 * **cmake** Includes settings for the build system.
 * **set_env.sh** An easy-to-use shell script for developers to quickly set up a ready-to-use development environment.
-* **api** [Not Loaded] Provides APIs for other languages like python, front-end (Node.js).
+* **api** Provides APIs for other languages like python, front-end (Node.js).
 * **scripts** [Not Loaded] Provides easy-to-use scripts for users to run standard docking processes, requiring no understanding of the coding details.
 
 

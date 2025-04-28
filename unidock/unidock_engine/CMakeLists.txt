@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.27)
 
 # ------------------------------ Options for Users
 option(BUILD_BIN "build binaries" TRUE)
-option(BUILD_TEST "build unit tests" TRUE)
+option(BUILD_API "build api" TRUE)
+option(BUILD_TEST "build unit tests" FALSE)
 option(BUILD_DOC "build documents" FALSE)
 
 # Precision
@@ -21,6 +22,11 @@ set(PRJ_NAME ud2)
 set(LIB_NAME ud_lib)
 set(BIN_NAME ud2)
 set(TESTS_NAME unit_test)
+
+# install
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT) # default path is
+    set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install CACHE PATH "Installation root" FORCE)
+endif()
 
 # ------------------------------ Fixed Settings
 # use C++ 17 standard for std::filesystem
@@ -73,13 +79,15 @@ endif ()
 add_subdirectory("src")
 
 # python binding
-add_subdirectory("api/python")
+if (BUILD_API)
+    add_subdirectory("api")
+endif ()
 
 if (BUILD_BIN)
     add_subdirectory("bin")
 endif ()
 
-if (BUILD_TEST)
+if (BUILD_TEST) # Only support GLIB >= 2.35 (Ubuntu 22.04) todo: GLIB 2.31
     add_subdirectory("include")
     add_subdirectory("test")
 endif ()
