@@ -11,7 +11,6 @@ def run_docking_pipeline(
     size_z: float,
     task: Literal['screen', 'score', 'benchmark_one', 'mc'] = 'screen',
     search_mode: Literal['fast', 'balance', 'detail', 'free'] = 'balance',
-    cluster: bool = True,
     exhaustiveness: int = 512,
     randomize: bool = True,
     mc_steps: int = 20,
@@ -25,9 +24,7 @@ def run_docking_pipeline(
     seed: int = 12345,
     use_tor_lib: bool = False,
     constraint_docking: bool = False,
-    gpu_device_id: int = 0,
-    max_gpu_memory: int = 0,
-    ncpu: int = 12
+    gpu_device_id: int = 0
 ) -> None:
     """
     Run docking pipeline using the Uni-Dock2 engine.
@@ -43,7 +40,6 @@ def run_docking_pipeline(
         size_z: Box size in Z dimension
         task: Task type ("screen", "score", "benchmark_one", or "mc")
         search_mode: Search mode ("fast", "balance", "detail", or "free")
-        cluster: Not implemented yet
         exhaustiveness: Number of independent runs
         randomize: Whether to randomize starting positions
         mc_steps: Number of Monte Carlo steps
@@ -58,7 +54,5 @@ def run_docking_pipeline(
         use_tor_lib: Whether to use torsion library
         constraint_docking: Whether to use constrained docking
         gpu_device_id: GPU device ID to use
-        max_gpu_memory: Not implemented yet
-        ncpu: Not implemented yet
     """
     ...

@@ -1,5 +1,4 @@
 Advanced:
-  cluster: true
   exhaustiveness: 512
   randomize: true
   mc_steps: 20
@@ -14,8 +13,6 @@ Advanced:
   use_tor_lib: false
 Hardware:
   gpu_device_id: 0
-  max_gpu_memory: 0
-  ncpu: 12
 Settings:
   size_x: 30.0
   size_y: 30.0

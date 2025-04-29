@@ -1,4 +1,3 @@
-from typing import List, Tuple, Dict, Optional, Any
 import os
 import json
 import yaml
@@ -115,7 +114,6 @@ class UnidockProtocolRunner(object):
             size_z=self.unidock2_option_dict['Settings']['size_z'],
             task=self.unidock2_option_dict['Settings']['task'],
             search_mode=self.unidock2_option_dict['Settings']['search_mode'],
-            cluster=self.unidock2_option_dict['Advanced']['cluster'],
             exhaustiveness=self.unidock2_option_dict['Advanced']['exhaustiveness'],
             randomize=self.unidock2_option_dict['Advanced']['randomize'],
             mc_steps=self.unidock2_option_dict['Advanced']['mc_steps'],
@@ -129,9 +127,7 @@ class UnidockProtocolRunner(object):
             seed=self.unidock2_option_dict['Advanced']['seed'],
             use_tor_lib=self.unidock2_option_dict['Advanced']['use_tor_lib'],
             constraint_docking=self.template_docking or self.covalent_ligand,
-            gpu_device_id=self.unidock2_option_dict['Hardware']['gpu_device_id'],
-            max_gpu_memory=self.unidock2_option_dict['Hardware']['max_gpu_memory'],
-            ncpu=self.unidock2_option_dict['Hardware']['ncpu']
+            gpu_device_id=self.unidock2_option_dict['Hardware']['gpu_device_id']
         )
 
         ## generate output ud2 pose sdf
