@@ -3,6 +3,7 @@ import sys
 import argparse
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+from unidock import __version__
 from unidock_processing.unidocktools.unidock_protocol_runner import UnidockProtocolRunner
 
 logo_description = r"""
@@ -44,6 +45,10 @@ def main():
                         default=None,
                         help='Uni-Dock2 configuration file recording all other options')
 
+    parser.add_argument('-v', '--version', action='version',
+                        version=f'%(prog)s {__version__}',
+                        help='Show program version')
+
     args = parser.parse_args()
 
     receptor_file_name = os.path.abspath(args.receptor)
@@ -77,6 +82,7 @@ def main():
         receptor_file_name=receptor_file_name,
         ligand_sdf_file_name_list=total_ligand_sdf_file_name_list,
         target_center=tuple(args.center),
+        option_yaml_file_name=args.configurations
     )
 
     docking_runner.run_unidock_protocol()

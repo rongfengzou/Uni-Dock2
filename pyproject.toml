@@ -10,10 +10,10 @@ name = "unidock_processing"
 description = "Uni-Dock molecular docking Processor"
 readme = "README.md"
 authors = [
-    {name = "DP Uni-Dock Team"}
+    {name = "DP Uni-Dock2 Team"}
 ]
 license = {text = "MIT"}
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",

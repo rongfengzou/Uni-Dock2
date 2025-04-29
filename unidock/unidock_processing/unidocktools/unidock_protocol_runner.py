@@ -1,6 +1,7 @@
 from typing import List, Tuple, Dict, Optional, Any
 import os
 import json
+import yaml
 from shutil import rmtree
 
 from rdkit import Chem
@@ -11,79 +12,51 @@ from unidock_processing.unidocktools.unidock_ligand_topology_builder import Unid
 from unidock_processing.unidocktools.unidock_ligand_pose_writer import UnidockLigandPoseWriter
 from unidock_processing.ligand_topology import utils
 
-
 class UnidockProtocolRunner(object):
     def __init__(self,
-                 receptor_file_name: str,
-                 ligand_sdf_file_name_list: List[str],
-                 target_center: Tuple[float, float, float],
-                 template_docking: bool = False,
-                 reference_sdf_file_name: Optional[str] = None,
-                 covalent_ligand: bool = False,
-                 covalent_residue_atom_info_list: Optional[List[Dict[str, Any]]] = None,
-                 preserve_receptor_hydrogen: bool = False,
-                 remove_temp_files: bool = True,
-                 working_dir_name: str = 'unidock_workdir',
-                 core_atom_mapping_dict_list: Optional[List[Optional[Dict[int, int]]]] = None,
-                 size_x: float = 25.0,
-                 size_y: float = 25.0,
-                 size_z: float = 25.0,
-                 task: str = 'screen',
-                 search_mode: str = 'free',
-                 exhaustiveness: int = 512,
-                 randomize: bool = True,
-                 mc_steps: int = 200,
-                 opt_steps: int = 5,
-                 tor_prec: float = 0.1,
-                 box_prec: float = 100.0,
-                 refine_steps: int = 0,
-                 num_pose: int = 10,
-                 rmsd_limit: float = 1.0,
-        ) -> None:
+                 receptor_file_name,
+                 ligand_sdf_file_name_list,
+                 target_center,
+                 option_yaml_file_name=None):
 
-        self.receptor_file_name: str = receptor_file_name
-        self.ligand_sdf_file_name_list: List[str] = ligand_sdf_file_name_list
-        self.target_center: Tuple[float, float, float] = target_center
-        
-        # Configuration parameters
-        self.template_docking: bool = template_docking
-        self.reference_sdf_file_name: Optional[str] = reference_sdf_file_name
-        self.covalent_ligand: bool = covalent_ligand
-        self.covalent_residue_atom_info_list: Optional[List[Dict[str, Any]]] = covalent_residue_atom_info_list
-        self.preserve_receptor_hydrogen: bool = preserve_receptor_hydrogen
-        self.remove_temp_files: bool = remove_temp_files
-        
-        # Docking parameters
-        self.size_x: float = size_x
-        self.size_y: float = size_y
-        self.size_z: float = size_z
-        self.task: str = task
-        self.search_mode: str = search_mode
-        self.exhaustiveness: int = exhaustiveness
-        self.randomize: bool = randomize
-        self.mc_steps: int = mc_steps
-        self.opt_steps: int = opt_steps
-        self.tor_prec: float = tor_prec
-        self.box_prec: float = box_prec
-        self.refine_steps: int = refine_steps
-        self.num_pose: int = num_pose
-        self.rmsd_limit: float = rmsd_limit
+        self.receptor_file_name = receptor_file_name
+        self.ligand_sdf_file_name_list = ligand_sdf_file_name_list
+        self.target_center = target_center
 
-        self.working_dir_name: str = os.path.abspath(working_dir_name)
-        self.unidock2_output_working_dir_name: str = os.path.join(self.working_dir_name, 'unidock2_output')
-        os.makedirs(self.unidock2_output_working_dir_name, exist_ok=True)
-        self.unidock2_input_json_file_name: str = ""
-        self.unidock2_pose_sdf_file_name: str = ""
-
-        # Process core atom mapping dict list
-        if core_atom_mapping_dict_list is None:
-            self.core_atom_mapping_dict_list: Optional[List[Optional[Dict[int, int]]]] = None
+        if option_yaml_file_name is not None:
+            self.option_yaml_file_name = option_yaml_file_name
         else:
-            num_molecules: int = len(core_atom_mapping_dict_list)
+            self.option_yaml_file_name = os.path.join(os.path.dirname(__file__), 'data', 'unidock_option_template.yaml')
+
+        with open(self.option_yaml_file_name, 'r') as option_yaml_file:
+            self.unidock2_option_dict = yaml.safe_load(option_yaml_file)
+
+        self.template_docking = self.unidock2_option_dict['Preprocessing']['template_docking']
+        self.reference_sdf_file_name = self.unidock2_option_dict['Preprocessing']['reference_sdf_file_name']
+        self.covalent_ligand = self.unidock2_option_dict['Preprocessing']['covalent_ligand']
+        self.covalent_residue_atom_info_list = self.unidock2_option_dict['Preprocessing']['covalent_residue_atom_info_list']
+        self.preserve_receptor_hydrogen = self.unidock2_option_dict['Preprocessing']['preserve_receptor_hydrogen']
+        self.remove_temp_files = self.unidock2_option_dict['Preprocessing']['remove_temp_files']
+
+        self.working_dir_name = os.path.abspath(self.unidock2_option_dict['Preprocessing']['working_dir_name'])
+        self.unidock2_output_working_dir_name = os.path.join(self.working_dir_name, 'unidock2_output')
+
+        if os.path.isdir(self.unidock2_output_working_dir_name):
+            rmtree(self.unidock2_output_working_dir_name, ignore_errors=True)
+            os.mkdir(self.unidock2_output_working_dir_name)
+        else:
+            os.mkdir(self.unidock2_output_working_dir_name)
+
+        raw_core_atom_mapping_dict_list = self.unidock2_option_dict['Preprocessing']['core_atom_mapping_dict_list']
+
+        if raw_core_atom_mapping_dict_list is None:
+            self.core_atom_mapping_dict_list = None
+        else:
+            num_molecules = len(raw_core_atom_mapping_dict_list)
             self.core_atom_mapping_dict_list = [None] * num_molecules
 
             for mol_idx in range(num_molecules):
-                raw_core_atom_mapping_dict = core_atom_mapping_dict_list[mol_idx]
+                raw_core_atom_mapping_dict = raw_core_atom_mapping_dict_list[mol_idx]
                 if raw_core_atom_mapping_dict is None:
                     self.core_atom_mapping_dict_list[mol_idx] = None
                 else:
@@ -94,7 +67,7 @@ class UnidockProtocolRunner(object):
             reference_mol = Chem.SDMolSupplier(self.reference_sdf_file_name, removeHs=True)[0]
             self.target_center = tuple(utils.calculate_center_of_mass(reference_mol))
 
-    def run_unidock_protocol(self) -> str:
+    def run_unidock_protocol(self):
         ## prepare receptor
         unidock_receptor_topology_builder = UnidockReceptorTopologyBuilder(
             self.receptor_file_name,
@@ -121,7 +94,7 @@ class UnidockProtocolRunner(object):
         unidock_ligand_topology_builder.get_summary_ligand_info_dict()
 
         ## combine inputs into one json file to engine
-        system_info_dict: Dict[str, Any] = {}
+        system_info_dict = {}
         system_info_dict['score'] = ['vina', 'gaff2']
         system_info_dict.update(unidock_receptor_topology_builder.receptor_info_summary_dict)
         system_info_dict.update(unidock_ligand_topology_builder.total_ligand_info_summary_dict)
@@ -134,24 +107,31 @@ class UnidockProtocolRunner(object):
         run_docking_pipeline(
             json_file_path=self.unidock2_input_json_file_name,
             output_dir=self.unidock2_output_working_dir_name,
-            center_x=self.target_center[0],
-            center_y=self.target_center[1],
-            center_z=self.target_center[2],
-            size_x=self.size_x,
-            size_y=self.size_y,
-            size_z=self.size_z,
-            task=self.task,
-            search_mode=self.search_mode,
-            exhaustiveness=self.exhaustiveness,
-            randomize=self.randomize,
-            mc_steps=self.mc_steps,
-            opt_steps=self.opt_steps,
-            tor_prec=self.tor_prec,
-            box_prec=self.box_prec,
-            refine_steps=self.refine_steps,
-            num_pose=self.num_pose,
-            rmsd_limit=self.rmsd_limit,
+            center_x=float(self.target_center[0]),
+            center_y=float(self.target_center[1]),
+            center_z=float(self.target_center[2]),
+            size_x=self.unidock2_option_dict['Settings']['size_x'],
+            size_y=self.unidock2_option_dict['Settings']['size_y'],
+            size_z=self.unidock2_option_dict['Settings']['size_z'],
+            task=self.unidock2_option_dict['Settings']['task'],
+            search_mode=self.unidock2_option_dict['Settings']['search_mode'],
+            cluster=self.unidock2_option_dict['Advanced']['cluster'],
+            exhaustiveness=self.unidock2_option_dict['Advanced']['exhaustiveness'],
+            randomize=self.unidock2_option_dict['Advanced']['randomize'],
+            mc_steps=self.unidock2_option_dict['Advanced']['mc_steps'],
+            opt_steps=self.unidock2_option_dict['Advanced']['opt_steps'],
+            tor_prec=self.unidock2_option_dict['Advanced']['tor_prec'],
+            box_prec=self.unidock2_option_dict['Advanced']['box_prec'],
+            refine_steps=self.unidock2_option_dict['Advanced']['refine_steps'],
+            num_pose=self.unidock2_option_dict['Advanced']['num_pose'],
+            rmsd_limit=self.unidock2_option_dict['Advanced']['rmsd_limit'],
+            energy_range=self.unidock2_option_dict['Advanced']['energy_range'],
+            seed=self.unidock2_option_dict['Advanced']['seed'],
+            use_tor_lib=self.unidock2_option_dict['Advanced']['use_tor_lib'],
             constraint_docking=self.template_docking or self.covalent_ligand,
+            gpu_device_id=self.unidock2_option_dict['Hardware']['gpu_device_id'],
+            max_gpu_memory=self.unidock2_option_dict['Hardware']['max_gpu_memory'],
+            ncpu=self.unidock2_option_dict['Hardware']['ncpu']
         )
 
         ## generate output ud2 pose sdf
@@ -167,4 +147,3 @@ class UnidockProtocolRunner(object):
         unidock_pose_writer.generate_docking_pose_sdf()
 
         self.unidock2_pose_sdf_file_name = unidock_pose_writer.docking_pose_sdf_file_name
-        return self.unidock2_pose_sdf_file_name

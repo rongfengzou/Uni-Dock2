@@ -53,7 +53,7 @@ void RunDockingPipeline(
     // Advanced parameters
     bool constraint_docking = false,
     bool use_tor_lib = true,
-    
+
     // Hardware parameters
     int gpu_device_id = 0
 ) {
@@ -69,10 +69,10 @@ void RunDockingPipeline(
     if (name_json.size() >= 5 && name_json.substr(name_json.size() - 5) == ".json") {
         name_json = name_json.substr(0, name_json.size() - 5);
     }
-    
+
     // Initialize docking parameters
     DockParam dock_param;
-    
+
     // Set box parameters from center and size
     dock_param.box.x_lo = center_x - size_x / 2;
     dock_param.box.x_hi = center_x + size_x / 2;
@@ -80,7 +80,7 @@ void RunDockingPipeline(
     dock_param.box.y_hi = center_y + size_y / 2;
     dock_param.box.z_lo = center_z - size_z / 2;
     dock_param.box.z_hi = center_z + size_z / 2;
-    
+
     // Real cutoff for protein box
     Real cutoff = 8.0;
     Box box_protein;
@@ -90,12 +90,12 @@ void RunDockingPipeline(
     box_protein.y_hi = dock_param.box.y_hi + cutoff;
     box_protein.z_lo = dock_param.box.z_lo - cutoff;
     box_protein.z_hi = dock_param.box.z_hi + cutoff;
-    
+
     // Create data structures for molecules
     UDFixMol fix_mol;
     UDFlexMolList flex_mol_list;
     std::vector<std::string> fns_flex;
-    
+
     // Read molecules from JSON
     read_ud_from_json(json_file_path, box_protein, fix_mol, flex_mol_list, fns_flex, use_tor_lib);
     spdlog::info("Receptor has {:d} atoms in box", fix_mol.natom);
@@ -123,7 +123,7 @@ void RunDockingPipeline(
     if (max_gpu_memory > 0 && max_gpu_memory < max_memory) {
         max_memory = (float) max_gpu_memory;
     }
-    
+
     // Check and extract advanced parameters
     dock_param.exhaustiveness = exhaustiveness;
     dock_param.randomize = randomize;
@@ -165,7 +165,7 @@ void RunDockingPipeline(
     if (constraint_docking){
         dock_param.randomize = false;
     }
-    
+
     // Create output directory if it doesn't exist
     if (!std::filesystem::exists(output_dir)) {
         try {
@@ -175,7 +175,7 @@ void RunDockingPipeline(
             exit(1);
         }
     }
-    
+
     // Run the docking
     if (task == "screen"){ // allow changing every parameter
         spdlog::info("----------------------- RUN Screening -----------------------");
