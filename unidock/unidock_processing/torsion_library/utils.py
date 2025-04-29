@@ -6,6 +6,12 @@ from MDAnalysis.lib.distances import calc_dihedrals
 from rdkit import Chem
 from rdkit.Chem import GetMolFrags, FragmentOnBonds
 from rdkit.Geometry.rdGeometry import Point3D
+from rdkit import RDLogger
+
+
+rdlg = RDLogger.logger()
+rdlg.setLevel(RDLogger.CRITICAL)
+
 
 def get_pattern_atom_mapping(pattern_mol):
     atom_map_dict = {}
@@ -70,11 +76,9 @@ def analyze_torsion_rule(torsion_rule_node):
     torsion_pattern_mol = Chem.MolFromSmarts(torsion_smarts)
 
     if 'N_lp' in torsion_smarts:
-        print(f'Cannot parse N_lp torsion rule with SMARTS: {torsion_smarts}')
         return None
 
     if torsion_pattern_mol is None:
-        print(f'Invalid torsion rule with SMARTS: {torsion_smarts}')
         return None
 
     torsion_atom_map_dict = get_pattern_atom_mapping(torsion_pattern_mol)

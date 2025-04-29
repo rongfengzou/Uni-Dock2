@@ -44,9 +44,14 @@ set(sources
 )
 
 # compile lib for the bin to link to
-add_library(${LIB_NAME} SHARED ${sources})
+add_library(${LIB_NAME} OBJECT ${sources})
 
 # include src directory
 target_include_directories(${LIB_NAME} PUBLIC ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES}  ${CMAKE_SOURCE_DIR}/include . )
-target_link_libraries(${LIB_NAME} PUBLIC CUDA::cudart)
+target_link_libraries(${LIB_NAME} PUBLIC CUDA::cudart_static)
 set_target_properties(${LIB_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
+# install
+install(TARGETS ${LIB_NAME}
+        LIBRARY DESTINATION lib
+)
