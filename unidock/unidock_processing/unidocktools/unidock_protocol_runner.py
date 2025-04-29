@@ -17,19 +17,19 @@ class UnidockProtocolRunner(object):
                  receptor_file_name,
                  ligand_sdf_file_name_list,
                  target_center,
-                 option_yaml_file_name=None):
+                 configuration_yaml_file_name=None):
 
         self.receptor_file_name = receptor_file_name
         self.ligand_sdf_file_name_list = ligand_sdf_file_name_list
         self.target_center = target_center
 
-        if option_yaml_file_name is not None:
-            self.option_yaml_file_name = option_yaml_file_name
+        if configuration_yaml_file_name is not None:
+            self.configuration_yaml_file_name = configuration_yaml_file_name
         else:
-            self.option_yaml_file_name = os.path.join(os.path.dirname(__file__), 'data', 'unidock_option_template.yaml')
+            self.configuration_yaml_file_name = os.path.join(os.path.dirname(__file__), '..', '..', 'unidock_configurations.yaml')
 
-        with open(self.option_yaml_file_name, 'r') as option_yaml_file:
-            self.unidock2_option_dict = yaml.safe_load(option_yaml_file)
+        with open(self.configuration_yaml_file_name, 'r') as configuration_yaml_file:
+            self.unidock2_option_dict = yaml.safe_load(configuration_yaml_file)
 
         self.template_docking = self.unidock2_option_dict['Preprocessing']['template_docking']
         self.reference_sdf_file_name = self.unidock2_option_dict['Preprocessing']['reference_sdf_file_name']
