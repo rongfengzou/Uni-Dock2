@@ -12,7 +12,7 @@ from rdkit.Chem.rdMolAlign import AlignMol
 from rdkit.Chem import rdFMCS
 from rdkit.Chem.MolStandardize import rdMolStandardize
 
-from unidock.unidock_processing.utils.molecule_processing import get_mol_without_indices, get_mol_with_indices
+from unidock_processing.utils.molecule_processing import get_mol_without_indices, get_mol_with_indices
 
 def prepare_covalent_ligand_mol(mol):
     covalent_atom_idx_string = mol.GetProp('covalent_atom_indices')

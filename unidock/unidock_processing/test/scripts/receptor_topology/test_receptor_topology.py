@@ -5,7 +5,7 @@ import pytest
 import yaml
 
 from rdkit import Chem
-from unidock.unidock_processing.unidocktools.unidock_receptor_topology_builder import UnidockReceptorTopologyBuilder
+from unidock_processing.unidocktools.unidock_receptor_topology_builder import UnidockReceptorTopologyBuilder
 
 @pytest.fixture
 def template_configurations():

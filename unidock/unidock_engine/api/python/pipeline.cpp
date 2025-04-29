@@ -215,8 +215,8 @@ void RunDockingPipeline(
 }
 
 // Define Python module
-PYBIND11_MODULE(unidock_engine, m) {
-    m.doc() = "Python bindings for the Uni-Dock2 molecular docking engine";
+PYBIND11_MODULE(pipeline, m) {
+    m.doc() = "Python bindings for the Uni-Dock2 molecular docking engine pipeline";
 
     m.def(
         "run_docking_pipeline", 

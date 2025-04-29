@@ -1,3 +1,9 @@
 #!/bin/bash
 
-$PYTHON setup.py install  --single-version-externally-managed --record=record.txt
+set -ex
+
+cd unidock/unidock_engine
+$PYTHON -m pip install .
+cd ../../
+
+$PYTHON -m pip install .

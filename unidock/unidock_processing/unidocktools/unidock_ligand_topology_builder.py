@@ -8,13 +8,13 @@ from rdkit import Chem
 from rdkit.Chem import Descriptors, GetMolFrags, FragmentOnBonds
 from rdkit.Chem.rdPartialCharges import ComputeGasteigerCharges
 
-from unidock.unidock_processing.ligand_topology.generic_rotatable_bond import GenericRotatableBond
-from unidock.unidock_processing.ligand_topology import utils
+from unidock_processing.ligand_topology.generic_rotatable_bond import GenericRotatableBond
+from unidock_processing.ligand_topology import utils
 
-from unidock.unidock_processing.torsion_library.torsion_library_driver import TorsionLibraryDriver
-from unidock.unidock_processing.unidocktools.vina_atom_type import AtomType
-from unidock.unidock_processing.unidocktools.unidock_vina_atom_types import VINA_ATOM_TYPE_DICT
-from unidock.unidock_processing.unidocktools.unidock_ff_atom_types import FF_ATOM_TYPE_DICT
+from unidock_processing.torsion_library.torsion_library_driver import TorsionLibraryDriver
+from unidock_processing.unidocktools.vina_atom_type import AtomType
+from unidock_processing.unidocktools.unidock_vina_atom_types import VINA_ATOM_TYPE_DICT
+from unidock_processing.unidocktools.unidock_ff_atom_types import FF_ATOM_TYPE_DICT
 
 def build_molecular_graph(mol,
                           torsion_library_dict,

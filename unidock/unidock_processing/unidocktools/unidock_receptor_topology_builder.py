@@ -2,11 +2,11 @@ import os
 from shutil import which
 import msys
 
-from unidock.unidock_processing.utils.molecule_processing import get_mol_without_indices
-from unidock.unidock_processing.unidocktools.protein_topology import prepare_receptor_residue_mol_list
-from unidock.unidock_processing.unidocktools.receptor_topology_preparation import ReceptorTopologyPreparation
-from unidock.unidock_processing.unidocktools.unidock_vina_atom_types import VINA_ATOM_TYPE_DICT
-from unidock.unidock_processing.unidocktools.unidock_ff_atom_types import FF_ATOM_TYPE_DICT
+from unidock_processing.utils.molecule_processing import get_mol_without_indices
+from unidock_processing.unidocktools.protein_topology import prepare_receptor_residue_mol_list
+from unidock_processing.unidocktools.receptor_topology_preparation import ReceptorTopologyPreparation
+from unidock_processing.unidocktools.unidock_vina_atom_types import VINA_ATOM_TYPE_DICT
+from unidock_processing.unidocktools.unidock_ff_atom_types import FF_ATOM_TYPE_DICT
 
 class UnidockReceptorTopologyBuilder(object):
     def __init__(self,

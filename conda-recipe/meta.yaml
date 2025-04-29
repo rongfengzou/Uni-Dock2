@@ -1,57 +1,64 @@
-package:
-  name: {{ EXAR_PROJECT_NAME }}
-  version: {{ EXAR_CONDA_BUILD_VERSION }}
+{% set name = "unidock2" %}
 
-build:
-  number: {{ EXAR_CONDA_BUILD_NUMBER }}
-  {% if EXAR_CONDA_BUILD_FEATURE_TAG is defined %}
-  string: {{ EXAR_CONDA_BUILD_FEATURE_TAG }}
-  {% endif %}
+{% if cuda_compiler_version in (None, "None", True, False) %}
+{% set cuda_major = 0 %}
+{% else %}
+{% set cuda_major = environ.get("cuda_compiler_version").split(".")[0] | int %}
+{% endif %}
+
+package:
+  name: {{ name }}
+  version: {{ version }}
 
 source:
-  path: ../..
+  path: ..
+
+build:
+  number: {{ build }}
+  # skip: true
 
 requirements:
   build:
-    - python
-    - setuptools
-    - ipykernel
-    - ipywidgets
-    - tqdm
-    - numpy>=1.13
-    - scipy
-    - scikit-learn
-    - lightgbm
-    - networkx
-    - jinja2
-    - rdkit
-    - ambertools
-    - openmm
-    - mdanalysis
-    - openbabel
-    - mdtraj
-    - parmed
-    - biopython
-    - parker
+    # - python
+    # - cross-python_{{ target_platform }}
+    # - cython                                 # [build_platform != target_platform]
+    - {{ compiler('c') }}
+    - {{ stdlib("c") }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('cuda') }} # [(linux or win) and cuda_compiler != "None"]
+    # - cuda-version {{ cuda_compiler_version }} # [(cuda_compiler_version or "None") != "None"]
+    - cmake =3.27
+    - make
+    - pybind11
 
-  run:
+  host:
     - python
+    - pip
+    - scikit-build-core >=0.2.0
+    # - cython
     - setuptools
-    - ipykernel
-    - ipywidgets
-    - tqdm
-    - numpy>=1.13
+    - cuda-version {{ cuda_compiler_version }} # [(cuda_compiler_version or "None") != "None"]
+    {% if cuda_compiler_version != "None" %}
+    - libcurand-dev
+    - cuda-cudart-dev
+    - cuda-driver-dev  # [linux]
+    {% endif %}
+  run:
+    - pyyaml
+    - pathos
+    - numpy
     - scipy
-    - scikit-learn
-    - lightgbm
+    - pandas
     - networkx
-    - jinja2
     - rdkit
-    - ambertools
-    - openmm
     - mdanalysis
     - openbabel
-    - mdtraj
-    - parmed
-    - biopython
-    - parker
+    - pdbfixer
+    - openmm
+    - msys_viparr_lpsolve55
+    - ambertools_stable
+
+test:
+  imports:
+    - unidock_engine
+    - unidock_processing

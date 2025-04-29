@@ -7,7 +7,7 @@ import numpy as np
 from rdkit import Chem
 from rdkit.Chem import Descriptors
 
-from unidock.unidock_processing.unidocktools.unidock_ligand_pose_writer import UnidockLigandPoseWriter
+from unidock_processing.unidocktools.unidock_ligand_pose_writer import UnidockLigandPoseWriter
 
 class UnidockBenchmarkRunner(object):
     def __init__(self,

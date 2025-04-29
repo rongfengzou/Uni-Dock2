@@ -8,11 +8,11 @@ from rdkit import Chem
 from rdkit.Chem import GetMolFrags, FragmentOnBonds
 from rdkit.Chem.rdPartialCharges import ComputeGasteigerCharges
 
-from unidock.unidock_processing.ligand_topology import utils
-from unidock.unidock_processing.ligand_topology.generic_rotatable_bond import GenericRotatableBond
+from unidock_processing.ligand_topology import utils
+from unidock_processing.ligand_topology.generic_rotatable_bond import GenericRotatableBond
 
-from unidock.unidock_processing.unidocktools.vina_atom_type import AtomType
-from unidock.unidock_processing.unidocktools.unidock_vina_atom_types import VINA_ATOM_TYPE_DICT
+from unidock_processing.unidocktools.vina_atom_type import AtomType
+from unidock_processing.unidocktools.unidock_vina_atom_types import VINA_ATOM_TYPE_DICT
 
 @pytest.fixture
 def template_configurations():
