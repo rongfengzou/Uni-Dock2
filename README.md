@@ -110,12 +110,14 @@ Single ligand docking case. Please see `examples/free_docking/molecular_docking`
 unidock2 -r 1G9V_protein_water_cleaned.pdb -l ligand_prepared.sdf -c 5.122 18.327 37.332 -cf unidock_configurations.yaml
 ```
 
+
 ** virtual screening case:
 
 Virtual screening docking case. Please see `examples/free_docking/virtual_screening`, and run
 ```
 unidock2 -r 5WIU_protein_cleaned.pdb -l actives_cleaned.sdf -c -18.0 15.2 -17.0 -cf unidock_configurations.yaml
 ```
+
 
 * Constraint docking
 
@@ -128,6 +130,7 @@ Use internal algorithms to calculate core atom mapping. Please see `examples/con
 unidock2 -r Bace.pdb -lb ligand_batch.dat -c 14.786 -0.626 -1.088 -cf unidock_configurations.yaml
 ```
 
+
 ** manual atom mapping case:
 
 Uni-Dock2 also supports customized atom mapping specification in case the default MCS algorithm does not perfroms well.
@@ -136,6 +139,7 @@ Please see `examples/constraint_docking/manual_atom_mapping`, and run
 ```
 unidock2 -r protein.pdb -l ligand.sdf -c 9.028 0.804 21.789 -cf unidock_configurations.yaml
 ```
+
 
 * Covalent docking
 
