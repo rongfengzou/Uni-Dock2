@@ -102,28 +102,34 @@ The default configuration YAML file is at `unidock/unidock_configurations.yaml`.
 In `examples` folder, there are cases for free docking, constraint docking and covalent docking.
 
 * Free docking
+
 ** molecular docking case:
+
 Single ligand docking case. Please see `examples/free_docking/molecular_docking`, and run
 ```
 unidock2 -r 1G9V_protein_water_cleaned.pdb -l ligand_prepared.sdf -c 5.122 18.327 37.332 -cf unidock_configurations.yaml
 ```
 
 ** virtual screening case:
+
 Virtual screening docking case. Please see `examples/free_docking/virtual_screening`, and run
 ```
 unidock2 -r 5WIU_protein_cleaned.pdb -l actives_cleaned.sdf -c -18.0 15.2 -17.0 -cf unidock_configurations.yaml
 ```
 
 * Constraint docking
+
 For constraint docking, users need to turn on `template_docking` and specify the file path of `reference_sdf_file_name` in configuration YAML file.
 
 ** automatic atom mapping case:
+
 Use internal algorithms to calculate core atom mapping. Please see `examples/constraint_docking/automatic_atom_mapping`, and run
 ```
 unidock2 -r Bace.pdb -lb ligand_batch.dat -c 14.786 -0.626 -1.088 -cf unidock_configurations.yaml
 ```
 
 ** manual atom mapping case:
+
 Uni-Dock2 also supports customized atom mapping specification in case the default MCS algorithm does not perfroms well.
 To do this, specify `core_atom_mapping_dict_list` in the configuration YAML file, please refer to `examples/constraint_docking/manual_atom_mapping/unidock_configurations.yaml` for example usage.
 Please see `examples/constraint_docking/manual_atom_mapping`, and run
@@ -132,6 +138,7 @@ unidock2 -r protein.pdb -l ligand.sdf -c 9.028 0.804 21.789 -cf unidock_configur
 ```
 
 * Covalent docking
+
 For covalent docking, users need to turn on `covalent_ligand` and specify the covalent residue information `covalent_residue_atom_info_list` in the configuration YAML file.
 The `covalent_residue_atom_info_list` is a list consist of 3 tuple, specifying protein residue information of heavy atoms from warhead to covalent bond starting atom, and covalent ending atom.
 Please see `examples/covalent_docking/unidock_configurations.yaml` for example usage.
