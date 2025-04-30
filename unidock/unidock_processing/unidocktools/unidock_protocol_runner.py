@@ -118,8 +118,6 @@ class UnidockProtocolRunner(object):
             randomize=self.unidock2_option_dict['Advanced']['randomize'],
             mc_steps=self.unidock2_option_dict['Advanced']['mc_steps'],
             opt_steps=self.unidock2_option_dict['Advanced']['opt_steps'],
-            tor_prec=self.unidock2_option_dict['Advanced']['tor_prec'],
-            box_prec=self.unidock2_option_dict['Advanced']['box_prec'],
             refine_steps=self.unidock2_option_dict['Advanced']['refine_steps'],
             num_pose=self.unidock2_option_dict['Advanced']['num_pose'],
             rmsd_limit=self.unidock2_option_dict['Advanced']['rmsd_limit'],
