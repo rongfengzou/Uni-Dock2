@@ -36,7 +36,7 @@ void RunDockingPipeline(
 
     // search mode
     std::string search_mode = "balance",
-    
+
     // dock parameters
     int exhaustiveness = 128,
     bool randomize = true,

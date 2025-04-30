@@ -6,22 +6,20 @@ def run_docking_pipeline(
     center_x: float,
     center_y: float,
     center_z: float,
-    size_x: float,
-    size_y: float,
-    size_z: float,
+    size_x: float = 30.0,
+    size_y: float = 30.0,
+    size_z: float = 30.0,
     task: Literal['screen', 'score', 'benchmark_one', 'mc'] = 'screen',
     search_mode: Literal['fast', 'balance', 'detail', 'free'] = 'balance',
     exhaustiveness: int = 512,
     randomize: bool = True,
-    mc_steps: int = 20,
+    mc_steps: int = 40,
     opt_steps: int = -1,
-    tor_prec: float = 0.3,
-    box_prec: float = 1.0,
     refine_steps: int = 5,
     num_pose: int = 10,
     rmsd_limit: float = 1.0,
-    energy_range: float = 3.0,
-    seed: int = 12345,
+    energy_range: float = 5.0,
+    seed: int = 1234567,
     use_tor_lib: bool = False,
     constraint_docking: bool = False,
     gpu_device_id: int = 0
@@ -44,8 +42,6 @@ def run_docking_pipeline(
         randomize: Whether to randomize starting positions
         mc_steps: Number of Monte Carlo steps
         opt_steps: Number of optimization steps
-        tor_prec: Torsion angle precision
-        box_prec: Box precision
         refine_steps: Number of refinement steps
         num_pose: Number of poses to generate
         rmsd_limit: RMSD limit for clustering

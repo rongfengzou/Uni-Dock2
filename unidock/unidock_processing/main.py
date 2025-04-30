@@ -43,7 +43,7 @@ def main():
 
     parser.add_argument('-cf', '--configurations',
                         default=None,
-                        help='Uni-Dock2 configuration file recording all other options')
+                        help='Uni-Dock2 configuration YAML file recording all other options')
 
     parser.add_argument('-v', '--version', action='version',
                         version=f'%(prog)s {__version__}',

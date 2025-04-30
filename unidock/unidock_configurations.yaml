@@ -1,15 +1,13 @@
 Advanced:
   exhaustiveness: 512
   randomize: true
-  mc_steps: 20
+  mc_steps: 40
   opt_steps: -1
-  tor_prec: 0.3
-  box_prec: 1.0
   refine_steps: 5
   num_pose: 10
   rmsd_limit: 1.0
-  energy_range: 3.0
-  seed: 12345
+  energy_range: 5.0
+  seed: 1234567
   use_tor_lib: false
 Hardware:
   gpu_device_id: 0

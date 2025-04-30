@@ -43,47 +43,99 @@ pip install .
 
 ---
 ## Usage
-Command line example:
-```
-for running docking:
-unidock2 -r receptor.pdb -lb ligand_batch.dat -c 5.12 18.35 37.36 -cf unidock_configurations.yaml
+We recommend all users use our command line functionality.
+After installation, there will be a command line tool `unidock2`.
 
-for checking current version:
-unidock2 -v
+A proper docking inputs should at least contains one receptor file, one or more ligand file, the docking pocket center positions, and the configuration file specifying all the other optional parameters.
 
-for checking help information:
-unidock2 -h
-```
+### `unidock2` command line parameters:
+* --receptor (-r): Receptor structure file in PDB or DMS format (default: None)
+* --ligand (-l): Single ligand structure file in SDF format (default: None)
+* --ligand_batch (-lb): Recorded batch text file of ligand SDF file path (default: None)
+* --center (-c): Docking box center coordinates (default: [0.0, 0.0, 0.0])
+* --configurations (-cf): Uni-Dock2 configuration YAML file recording all other options (default: None)
+* --version (-v): Show unidock2 program version
+* --help (-h): Show help message and exit
 
-The template YAML file path is `unidock/unidock_configurations.yaml`
+** Note: --ligand or --ligand_batch should have at least one specified.
 
-For example free docking case, please see `unidock/unidock_processing/test/data/free_docking/molecular_docking`
-The default configurations should be fine in the example `unidock_configurations.yaml` file, just enter the test case folder and run:
+### Configuration YAML parameters:
+** Advanced docking engine specified options:
+* exhaustiveness: MC candidates count (roughly proportional to time). If given, value for search_mode will be overridden. (default: 512)
+* randomize: Whether to randomize input pose before performing the global search. (default: true)
+* mc_steps: If given, value for search_mode will be overridden. (default: 20)
+* opt_steps: Optimization steps after the global search; -1 to use heuristic strategy. (default: -1)
+* refine_steps: Refinement steps after clustering. (default: 5)
+* num_pose: Number of the finally generated poses to output. (default: 10)
+* rmsd_limit: Minimum RMSD between output poses. (default: 1.0)
+* energy_range: Maximum energy difference between output poses and the best pose. (default: 5.0)
+* seed: Explicit random seed. (default: 1234567)
+* use_tor_lib: True to use torsion library. (default: false)
+
+** Hardware options:
+* gpu_device_id: GPU device ID. (default: 0)
+
+** Docking Settings options:
+* size_x: Docking box size in the X dimension in Angstrom. (default: 30.0)
+* size_y: Docking box size in the Y dimension in Angstrom. (default: 30.0)
+* size_z: Docking box size in the Z dimension in Angstrom. (default: 30.0)
+
+* task: screen | score | mc (default: screen)
+*** screen: The most common mode, perform randomize (if true) + MC (mc_steps) + optimization (opt_steps) + cluster (if true) + refinement (refine_steps)
+*** score: Only provide scores for input ligands, no searching or optimization
+*** mc: Only perform pure MC, namely opt_steps=0; no refinement, neither
+
+* search_mode: fast | balance | detail | free. Using recommended settings of exhaustiveness and search steps. (default: balance)
+
+** Docking Preprocessing options:
+* template_docking: Specified to true to perform constraint docking mode. (default: false)
+* reference_sdf_file_name: Reference molecule SDF file name in constraint docking. (default: null)
+* core_atom_mapping_dict_list: Reference to ligand atom mapping dict, please see example case for more detail. (default: null)
+* covalent_ligand: Specified to true to perform covalent docking mode. (default: false)
+* covalent_residue_atom_info_list: Covalent warhead information for covalent receptor residues, please see example case for more detail. (default: null)
+* preserve_receptor_hydrogen: Preserve hydrogen atoms in receptor preparation protocol. (default: false)
+* remove_temp_files: Remove intermediate files after docking protocol. (default: true)
+* working_dir_name: Docking working directory. (default: .)
+
+### Example case:
+The default configuration YAML file is at `unidock/unidock_configurations.yaml`.
+In `examples` folder, there are cases for free docking, constraint docking and covalent docking.
+
+* Free docking
+** molecular docking case:
+Single ligand docking case. Please see `examples/free_docking/molecular_docking`, and run
 ```
 unidock2 -r 1G9V_protein_water_cleaned.pdb -l ligand_prepared.sdf -c 5.122 18.327 37.332 -cf unidock_configurations.yaml
 ```
 
-For example constraint docking case, please see `unidock/unidock_processing/test/data/constraint_docking/automatic_atom_mapping` for automatic atom mapping case and `unidock/unidock_processing/test/data/constraint_docking/manual_atom_mapping` for manual specified mapping case.
-
-Please find the example changes and options in the `unidock_configurations.yaml` file. `template_docking` option should be turned on, `reference_sdf_file_name` should be specified and `core_atom_mapping_dict_list` should be `null` for automatic case, or a list of dict for manual specifying mapping case.
-
-example run:
+** virtual screening case:
+Virtual screening docking case. Please see `examples/free_docking/virtual_screening`, and run
 ```
-for automatic case:
-unidock2 -r Bace.pdb -lb ligand_batch.dat -c 14.786 -0.626 -1.088 -cf unidock_configurations.yaml
+unidock2 -r 5WIU_protein_cleaned.pdb -l actives_cleaned.sdf -c -18.0 15.2 -17.0 -cf unidock_configurations.yaml
+```
 
-for manual case:
+* Constraint docking
+For constraint docking, users need to turn on `template_docking` and specify the file path of `reference_sdf_file_name` in configuration YAML file.
+
+** automatic atom mapping case:
+Use internal algorithms to calculate core atom mapping. Please see `examples/constraint_docking/automatic_atom_mapping`, and run
+```
+unidock2 -r Bace.pdb -lb ligand_batch.dat -c 14.786 -0.626 -1.088 -cf unidock_configurations.yaml
+```
+
+** manual atom mapping case:
+Uni-Dock2 also supports customized atom mapping specification in case the default MCS algorithm does not perfroms well.
+To do this, specify `core_atom_mapping_dict_list` in the configuration YAML file, please refer to `examples/constraint_docking/manual_atom_mapping/unidock_configurations.yaml` for example usage.
+Please see `examples/constraint_docking/manual_atom_mapping`, and run
+```
 unidock2 -r protein.pdb -l ligand.sdf -c 9.028 0.804 21.789 -cf unidock_configurations.yaml
 ```
 
-For example covalent docking case, please find `unidock/unidock_processing/test/data/covalent_docking/1EWL`
-Please find the example changes and options in the `unidock_configurations.yaml` file. `covalent_ligand` option should be turned on, `covalent_residue_atom_info_list` should be specified to tell the algorithm about the covalent warhead residue information. The warhead information is a list of 3 lists. Each one records one residue information of the corresponding heavy atoms. The heavy atoms starts from the warhead atom, the covalent bond starting atom, and the ending atom on the covalent proteihn residue.
-
-example run:
+* Covalent docking
+For covalent docking, users need to turn on `covalent_ligand` and specify the covalent residue information `covalent_residue_atom_info_list` in the configuration YAML file.
+The `covalent_residue_atom_info_list` is a list consist of 3 tuple, specifying protein residue information of heavy atoms from warhead to covalent bond starting atom, and covalent ending atom.
+Please see `examples/covalent_docking/unidock_configurations.yaml` for example usage.
+Please see `examples/covalent_docking`, and run
 ```
-for automatic case:
-unidock2 -r Bace.pdb -lb ligand_batch.dat -c 14.786 -0.626 -1.088 -cf unidock_configurations.yaml
-
-for manual case:
 unidock2 -r 1EWL_prepared.pdb -l covalent_mol.sdf -c 8.411 13.047 6.811 -cf unidock_configurations.yaml
 ```
