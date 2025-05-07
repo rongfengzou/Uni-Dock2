@@ -1,9 +1,10 @@
 import os
 import sys
+from importlib.metadata import version
 import argparse
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from unidock_processing import _version as __version__
+from unidock_processing.io import read_unidock_params_from_yaml
 from unidock_processing.unidocktools.unidock_protocol_runner import UnidockProtocolRunner
 
 logo_description = r"""
@@ -46,7 +47,7 @@ def main():
                         help='Uni-Dock2 configuration YAML file recording all other options')
 
     parser.add_argument('-v', '--version', action='version',
-                        version=f'%(prog)s {__version__}',
+                        version=f'%(prog)s {version("unidock_processing")}',
                         help='Show program version')
 
     args = parser.parse_args()
@@ -78,11 +79,17 @@ def main():
     if len(total_ligand_sdf_file_name_list) == 0:
         raise ValueError('Ligand SDF file input not found !!')
 
+    kwargs_dict = dict()
+    if args.configurations:
+        extra_params = read_unidock_params_from_yaml(args.configurations)
+        kwargs_dict = extra_params.to_protocol_kwargs()
+    print(kwargs_dict)
+
     docking_runner = UnidockProtocolRunner(
         receptor_file_name=receptor_file_name,
         ligand_sdf_file_name_list=total_ligand_sdf_file_name_list,
         target_center=tuple(args.center),
-        configuration_yaml_file_name=args.configurations
+        **kwargs_dict
     )
 
     docking_runner.run_unidock_protocol()
