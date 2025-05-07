@@ -21,6 +21,6 @@ classifiers = [
 dynamic = ["version"]
 
 [tool.scikit-build]
-cmake.version = "~=3.27"
+cmake.version = ">=3.27"
 build.tool-args = ["-j4"]
 wheel.install-dir = "unidock_engine/api/python"
