@@ -37,3 +37,65 @@ include = ["unidock_processing*"]
 omit = [
     "*/tests/*",
     ]
+
+[tool.ruff]
+
+include = [
+    "unidock/unidock_processing/*.py",
+]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+    "unidock/unidock_configureations.yaml",
+]
+
+line-length = 88
+indent-width = 4
+
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E1", "E4", "E5", "E7", "E9", "F", "W"]
+ignore = []
+
+fixable = ["ALL"]
+unfixable = []
+
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.format]
+quote-style = "double"
+
+indent-style = "space"
+
+skip-magic-trailing-comma = false
+
+line-ending = "auto"
+
+docstring-code-format = false
+
+docstring-code-line-length = "dynamic"
