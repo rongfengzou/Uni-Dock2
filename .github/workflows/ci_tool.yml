@@ -35,6 +35,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: init env
+      run: |
+        micromamba activate base
+
     - name: install unidock engine
       working-directory: ./unidock/unidock_engine
       run: |
