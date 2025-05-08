@@ -35,25 +35,27 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: init env
-      shell: _entrypoint.sh /bin/bash --noprofile --norc -eo pipefail {0}
-      run: |
-        micromamba activate base
-        which python
-
-    - name: install unidock engine
+    - name: install unidock2
       working-directory: ./unidock/unidock_engine
+      shell: bash
       run: |
+        eval "$(micromamba shell hook --shell bash)"
+        micromamba activate base
+        cd unidock/unidock_engine
         pip install .
-
-    - name: install unidock processing
-      run: |
+        cd ../..
         pip install .
 
     - name: install test tools
+      shell: bash
       run: |
+        eval "$(micromamba shell hook --shell bash)"
+        micromamba activate base
         pip install pytest pytest-cov
 
     - name: run processing unit-test
+      shell: bash
       run: |
+        eval "$(micromamba shell hook --shell bash)"
+        micromamba activate base
         pytest unidock/unidock_processing/tests --cov
