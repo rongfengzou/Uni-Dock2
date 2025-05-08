@@ -71,6 +71,8 @@ class UnidockConfig:
 
     def to_protocol_kwargs(self) -> Dict[str, Any]:
         kwargs_dict = {
+            "box_size": (self.settings.size_x, self.settings.size_y,
+                         self.settings.size_z),
             "template_docking": self.preprocessing.template_docking,
             "reference_sdf_file_name": self.preprocessing.reference_sdf_file_name,
             "covalent_ligand": self.preprocessing.covalent_ligand,
@@ -81,9 +83,6 @@ class UnidockConfig:
             "working_dir_name": self.preprocessing.working_dir_name,
             "core_atom_mapping_dict_list": \
                 self.preprocessing.core_atom_mapping_dict_list,
-            "size_x": self.settings.size_x,
-            "size_y": self.settings.size_y,
-            "size_z": self.settings.size_z,
             "task": self.settings.task,
             "search_mode": self.settings.search_mode,
             "exhaustiveness": self.advanced.exhaustiveness,

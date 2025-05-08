@@ -23,6 +23,7 @@ class UnidockProtocolRunner(object):
         receptor_file_name: str,
         ligand_sdf_file_name_list: List[str],
         target_center: Tuple[float, float, float],
+        box_size: Tuple[float, float, float] = (25.0, 25.0, 25.0),
         template_docking: bool = False,
         reference_sdf_file_name: Optional[str] = None,
         covalent_ligand: bool = False,
@@ -30,9 +31,6 @@ class UnidockProtocolRunner(object):
         preserve_receptor_hydrogen: bool = False,
         working_dir_name: str = "unidock_workdir",
         core_atom_mapping_dict_list: Optional[List[Optional[Dict[int, int]]]] = None,
-        size_x: float = 25.0,
-        size_y: float = 25.0,
-        size_z: float = 25.0,
         task: str = "screen",
         search_mode: str = "free",
         exhaustiveness: int = 512,
@@ -60,9 +58,7 @@ class UnidockProtocolRunner(object):
         self.remove_temp_files = remove_temp_files
 
         # Docking parameters
-        self.size_x = size_x
-        self.size_y = size_y
-        self.size_z = size_z
+        self.box_size = box_size
         self.task = task
         self.search_mode = search_mode
         self.exhaustiveness = exhaustiveness
@@ -157,9 +153,9 @@ class UnidockProtocolRunner(object):
             center_x=self.target_center[0],
             center_y=self.target_center[1],
             center_z=self.target_center[2],
-            size_x=self.size_x,
-            size_y=self.size_y,
-            size_z=self.size_z,
+            size_x=self.box_size[0],
+            size_y=self.box_size[1],
+            size_z=self.box_size[2],
             task=self.task,
             search_mode=self.search_mode,
             exhaustiveness=self.exhaustiveness,
