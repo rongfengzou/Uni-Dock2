@@ -37,6 +37,7 @@ jobs:
 
     - name: init env
       run: |
+        eval "$(micromamba shell hook --shell )"
         micromamba activate base
 
     - name: install unidock engine
