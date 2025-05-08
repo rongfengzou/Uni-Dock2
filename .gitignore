@@ -22,6 +22,7 @@ unidock/example/screening_test/test_dock
 unidock_tools/dist
 unidock_tools/dist/*
 *.egg-info
+torsion_library.pkl
 _version.py
 test_ud2
 setup.py.depre

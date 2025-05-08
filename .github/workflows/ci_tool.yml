@@ -1,0 +1,53 @@
+name: Uni-Dock2 CI/CD
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  style-check:
+    continue-on-error: true
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+          python-version: "3.10"
+
+    - name: Install ruff
+      run: |
+        python -m pip install --upgrade pip
+        pip install ruff
+
+    - name: Run ruff
+      run: |
+        ruff check
+
+  tests:
+    if: ${{ always() }}
+    needs: [style-check]
+    runs-on: [self-hosted, nvidia]
+    container:
+      image: registry.dp.tech/public/unidock2:base-0.0.1
+      options: --gpus all
+    steps:
+    - name: checkout repo
+      uses: actions/checkout@v4
+
+    - name: install unidock engine
+      working-directory: ./unidock/unidock_engine
+      run: |
+        pip install .
+
+    - name: install unidock processing
+      run: |
+        pip install .
+
+    - name: install test tools
+      run: |
+        pip install pytest pytest-cov
+
+    - name: run processing unit-test
+      run: |
+        pytest unidock/unidock_processing/tests --cov
