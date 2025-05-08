@@ -44,21 +44,21 @@ jobs:
 
     - name: install unidock engine
       working-directory: ./unidock/unidock_engine
-      shell: bash -l {0}
+      shell: bash
       run: |
         pip install .
 
     - name: install unidock processing
-      shell: bash -l {0}
+      shell: bash
       run: |
         pip install .
 
     - name: install test tools
-      shell: bash -l {0}
+      shell: bash
       run: |
         pip install pytest pytest-cov
 
     - name: run processing unit-test
-      shell: bash -l {0}
+      shell: bash
       run: |
         pytest unidock/unidock_processing/tests --cov
