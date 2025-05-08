@@ -37,7 +37,7 @@ jobs:
 
     - name: init env
       run: |
-        bash /usr/local/bin/_activate_current_env.sh
+        /usr/bin/micromamba activate base
         which python
 
     - name: install unidock engine
