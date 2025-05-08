@@ -36,6 +36,9 @@ jobs:
         uses: conda-incubator/setup-miniconda@v3
         with:
           python-version: ${{ matrix.python }}
+          environment-name: conda-build
+          auto-activate-base: false
+          activate-environment: conda-build
           mamba-version: "*"
           channels: conda-forge
           mamba: true
