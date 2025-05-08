@@ -2,7 +2,6 @@ name: Conda Build
 
 on:
   push:
-    branches: [ feature/ci-workflow ]
     tags:
       - "*"
   workflow_dispatch:
