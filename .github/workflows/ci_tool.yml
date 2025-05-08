@@ -37,8 +37,8 @@ jobs:
 
     - name: init env
       run: |
-        eval "$(micromamba shell hook --shell )"
-        micromamba activate base
+        . /usr/local/bin/_activate_current_env.sh
+        which python
 
     - name: install unidock engine
       working-directory: ./unidock/unidock_engine
