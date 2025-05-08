@@ -38,21 +38,19 @@ void RunDockingPipeline(
     std::string search_mode = "balance",
 
     // dock parameters
-    int exhaustiveness = 128,
+    int exhaustiveness = 512,
     bool randomize = true,
-    int mc_steps = 20,
-    int opt_steps = 10,
-    Real tor_prec = 0.3,
-    Real box_prec = 1.0,
+    int mc_steps = 40,
+    int opt_steps = -1,
     int refine_steps = 5,
-    int num_pose = 1,
+    int num_pose = 10,
     Real rmsd_limit = 1.0,
-    Real energy_range = 3.0,
-    int seed = 12345,
+    Real energy_range = 5.0,
+    int seed = 1234567,
 
     // Advanced parameters
     bool constraint_docking = false,
-    bool use_tor_lib = true,
+    bool use_tor_lib = false,
 
     // Hardware parameters
     int gpu_device_id = 0
@@ -129,8 +127,6 @@ void RunDockingPipeline(
     dock_param.randomize = randomize;
     dock_param.mc_steps = mc_steps;
     dock_param.opt_steps = opt_steps;
-    dock_param.tor_prec = tor_prec;
-    dock_param.box_prec = box_prec;
     dock_param.refine_steps = refine_steps;
     dock_param.num_pose = num_pose;
     dock_param.rmsd_limit = rmsd_limit;
@@ -232,19 +228,17 @@ PYBIND11_MODULE(pipeline, m) {
         py::arg("size_z"),
         py::arg("task") = "screen",
         py::arg("search_mode") = "balance",
-        py::arg("exhaustiveness") = 128,
+        py::arg("exhaustiveness") = 512,
         py::arg("randomize") = true,
-        py::arg("mc_steps") = 20,
-        py::arg("opt_steps") = 10,
-        py::arg("tor_prec") = 0.3,
-        py::arg("box_prec") = 1.0,
+        py::arg("mc_steps") = 40,
+        py::arg("opt_steps") = -1,
         py::arg("refine_steps") = 5,
-        py::arg("num_pose") = 1,
+        py::arg("num_pose") = 10,
         py::arg("rmsd_limit") = 1.0,
-        py::arg("energy_range") = 3.0,
-        py::arg("seed") = 12345,
+        py::arg("energy_range") = 5.0,
+        py::arg("seed") = 1234567,
         py::arg("constraint_docking") = false,
-        py::arg("use_tor_lib") = true,
+        py::arg("use_tor_lib") = false,
         py::arg("gpu_device_id") = 0
     );
 }

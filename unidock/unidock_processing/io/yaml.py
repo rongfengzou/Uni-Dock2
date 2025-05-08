@@ -7,9 +7,9 @@ import yaml
 class AdvancedConfig:
     exhaustiveness: int = 512
     randomize: bool = True
-    mc_steps: int = 200
-    opt_steps: int = 5
-    refine_steps: int = 0
+    mc_steps: int = 40
+    opt_steps: int = -1
+    refine_steps: int = 5
     num_pose: int = 10
     rmsd_limit: float = 1.0
     energy_range: float = 5.0
@@ -24,11 +24,11 @@ class HardwareConfig:
 
 @dataclass
 class SettingsConfig:
-    size_x: float = 25.0
-    size_y: float = 25.0
-    size_z: float = 25.0
+    size_x: float = 30.0
+    size_y: float = 30.0
+    size_z: float = 30.0
     task: str = "screen"
-    search_mode: str = "free"
+    search_mode: str = "balance"
 
 
 @dataclass
@@ -40,7 +40,7 @@ class PreprocessingConfig:
     covalent_residue_atom_info_list: Optional[List[Any]] = None
     preserve_receptor_hydrogen: bool = False
     remove_temp_files: bool = True
-    working_dir_name: str = "unidock_workdir"
+    working_dir_name: str = "./"
 
 
 @dataclass
