@@ -38,6 +38,7 @@ jobs:
     - name: init env
       shell: bash
       run: |
+        eval "$(micromamba shell hook --shell bash)"
         micromamba activate base
         which python
 
