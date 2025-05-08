@@ -36,6 +36,10 @@ jobs:
     - name: checkout repo
       uses: actions/checkout@v4
 
+    - name: init bash
+      run: |
+        /root/.local/bin/micromamba activate base
+
     - name: install unidock engine
       working-directory: ./unidock/unidock_engine
       run: |

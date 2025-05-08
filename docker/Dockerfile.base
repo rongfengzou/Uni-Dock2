@@ -1,17 +1,18 @@
-FROM mambaorg/micromamba:2-ubuntu22.04
+FROM ubuntu:22.04
 
-USER root
-SHELL ["/bin/bash", "-ic"]
+SHELL ["/bin/bash", "-c"]
 ENV TZ=Asia/Shanghai
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y build-essential zip unzip vim wget curl git
 RUN rm -rf /var/lib/apt/lists/*
 
-RUN micromamba install -y \
+RUN yes '' | head -n 4 | "${SHELL}" <(curl -L micro.mamba.pm/install.sh)
+
+RUN /root/.local/bin/micromamba install -y \
     -c http://quetz.dp.tech:8088/get/baymax \
     -c conda-forge \
     cmake>=3.27 pybind11 \
     cuda-nvcc libcurand-dev cuda-cudart-dev cuda-version=12.0 \
     python=3.10 ipython pyyaml pathos numpy pandas scipy networkx \
     rdkit mdanalysis openbabel pdbfixer openmm \
-    msys_viparr_lpsolve55 ambertools_stable && micromamba clean -a
+    msys_viparr_lpsolve55 ambertools_stable && /root/.local/bin/micromamba clean -a
