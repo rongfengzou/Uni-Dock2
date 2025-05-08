@@ -36,12 +36,11 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: install unidock2
-      working-directory: ./unidock/unidock_engine
       shell: bash
       run: |
         eval "$(micromamba shell hook --shell bash)"
         micromamba activate base
-        cd unidock/unidock_engine
+        cd ./unidock/unidock_engine
         pip install .
         cd ../..
         pip install .
