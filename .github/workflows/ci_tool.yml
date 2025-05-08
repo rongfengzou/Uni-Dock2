@@ -36,8 +36,9 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: init env
+      shell: bash
       run: |
-        /usr/bin/micromamba activate base
+        micromamba activate base
         which python
 
     - name: install unidock engine
