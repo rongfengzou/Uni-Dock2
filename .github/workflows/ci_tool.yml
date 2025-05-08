@@ -37,7 +37,7 @@ jobs:
 
     - name: init env
       run: |
-        . /usr/local/bin/_activate_current_env.sh
+        bash /usr/local/bin/_activate_current_env.sh
         which python
 
     - name: install unidock engine
