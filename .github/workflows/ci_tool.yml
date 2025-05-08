@@ -1,4 +1,5 @@
-name: Uni-Dock2 CI/CD
+name: Uni-Dock2 processing test
+
 on:
   pull_request:
     branches:
@@ -27,7 +28,7 @@ jobs:
   tests:
     if: ${{ always() }}
     needs: [style-check]
-    runs-on: [self-hosted, nvidia]
+    runs-on: [nvidia, t4]
     container:
       image: registry.dp.tech/public/unidock2:base-0.0.1
       options: --gpus all
