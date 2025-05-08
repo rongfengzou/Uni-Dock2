@@ -49,36 +49,38 @@ class UnidockConfig:
     hardware: HardwareConfig = field(default_factory=HardwareConfig)
     settings: SettingsConfig = field(default_factory=SettingsConfig)
     preprocessing: PreprocessingConfig = field(default_factory=PreprocessingConfig)
-    
+
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'UnidockConfig':
+    def from_dict(cls, data: Dict[str, Any]) -> "UnidockConfig":
         """Create UnidockConfig from a dictionary."""
         config = cls()
-        
+
         if "Advanced" in data:
             config.advanced = AdvancedConfig(**data["Advanced"])
-        
+
         if "Hardware" in data:
             config.hardware = HardwareConfig(**data["Hardware"])
-        
+
         if "Settings" in data:
             config.settings = SettingsConfig(**data["Settings"])
-        
+
         if "Preprocessing" in data:
             config.preprocessing = PreprocessingConfig(**data["Preprocessing"])
-        
+
         return config
-    
+
     def to_protocol_kwargs(self) -> Dict[str, Any]:
         kwargs_dict = {
             "template_docking": self.preprocessing.template_docking,
             "reference_sdf_file_name": self.preprocessing.reference_sdf_file_name,
             "covalent_ligand": self.preprocessing.covalent_ligand,
-            "covalent_residue_atom_info_list": self.preprocessing.covalent_residue_atom_info_list,
+            "covalent_residue_atom_info_list": \
+                self.preprocessing.covalent_residue_atom_info_list,
             "preserve_receptor_hydrogen": self.preprocessing.preserve_receptor_hydrogen,
             "remove_temp_files": self.preprocessing.remove_temp_files,
             "working_dir_name": self.preprocessing.working_dir_name,
-            "core_atom_mapping_dict_list": self.preprocessing.core_atom_mapping_dict_list,
+            "core_atom_mapping_dict_list": \
+                self.preprocessing.core_atom_mapping_dict_list,
             "size_x": self.settings.size_x,
             "size_y": self.settings.size_y,
             "size_z": self.settings.size_z,
@@ -101,14 +103,14 @@ class UnidockConfig:
 def read_unidock_params_from_yaml(yaml_file: str) -> UnidockConfig:
     """
     Read Unidock parameters from a yaml file and convert to UnidockConfig dataclass.
-    
+
     Args:
         yaml_file: Path to the yaml file
-        
+
     Returns:
         UnidockConfig object
     """
-    with open(yaml_file, 'r') as f:
+    with open(yaml_file, "r") as f:
         params = yaml.safe_load(f)
-    
+
     return UnidockConfig.from_dict(params)
