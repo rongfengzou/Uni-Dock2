@@ -33,12 +33,7 @@ jobs:
       image: dptechnology/unidock2:base-0.0.1
       options: --gpus all
     steps:
-    - name: checkout repo
-      uses: actions/checkout@v4
-
-    - name: init bash
-      run: |
-        /root/.local/bin/micromamba activate base
+    - uses: actions/checkout@v4
 
     - name: install unidock engine
       working-directory: ./unidock/unidock_engine
