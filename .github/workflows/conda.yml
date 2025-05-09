@@ -2,8 +2,6 @@ name: Conda Build
 
 on:
   push:
-    branches:
-      - "build/conda_ci_manual_args"
     tags:
       - "*"
   workflow_dispatch:
