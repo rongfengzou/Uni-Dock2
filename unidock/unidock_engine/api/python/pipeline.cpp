@@ -36,24 +36,22 @@ void RunDockingPipeline(
 
     // search mode
     std::string search_mode = "balance",
-    
+
     // dock parameters
-    int exhaustiveness = 128,
+    int exhaustiveness = 512,
     bool randomize = true,
-    int mc_steps = 20,
-    int opt_steps = 10,
-    Real tor_prec = 0.3,
-    Real box_prec = 1.0,
+    int mc_steps = 40,
+    int opt_steps = -1,
     int refine_steps = 5,
-    int num_pose = 1,
+    int num_pose = 10,
     Real rmsd_limit = 1.0,
-    Real energy_range = 3.0,
-    int seed = 12345,
+    Real energy_range = 5.0,
+    int seed = 1234567,
 
     // Advanced parameters
     bool constraint_docking = false,
-    bool use_tor_lib = true,
-    
+    bool use_tor_lib = false,
+
     // Hardware parameters
     int gpu_device_id = 0
 ) {
@@ -69,10 +67,10 @@ void RunDockingPipeline(
     if (name_json.size() >= 5 && name_json.substr(name_json.size() - 5) == ".json") {
         name_json = name_json.substr(0, name_json.size() - 5);
     }
-    
+
     // Initialize docking parameters
     DockParam dock_param;
-    
+
     // Set box parameters from center and size
     dock_param.box.x_lo = center_x - size_x / 2;
     dock_param.box.x_hi = center_x + size_x / 2;
@@ -80,7 +78,7 @@ void RunDockingPipeline(
     dock_param.box.y_hi = center_y + size_y / 2;
     dock_param.box.z_lo = center_z - size_z / 2;
     dock_param.box.z_hi = center_z + size_z / 2;
-    
+
     // Real cutoff for protein box
     Real cutoff = 8.0;
     Box box_protein;
@@ -90,12 +88,12 @@ void RunDockingPipeline(
     box_protein.y_hi = dock_param.box.y_hi + cutoff;
     box_protein.z_lo = dock_param.box.z_lo - cutoff;
     box_protein.z_hi = dock_param.box.z_hi + cutoff;
-    
+
     // Create data structures for molecules
     UDFixMol fix_mol;
     UDFlexMolList flex_mol_list;
     std::vector<std::string> fns_flex;
-    
+
     // Read molecules from JSON
     read_ud_from_json(json_file_path, box_protein, fix_mol, flex_mol_list, fns_flex, use_tor_lib);
     spdlog::info("Receptor has {:d} atoms in box", fix_mol.natom);
@@ -123,14 +121,12 @@ void RunDockingPipeline(
     if (max_gpu_memory > 0 && max_gpu_memory < max_memory) {
         max_memory = (float) max_gpu_memory;
     }
-    
+
     // Check and extract advanced parameters
     dock_param.exhaustiveness = exhaustiveness;
     dock_param.randomize = randomize;
     dock_param.mc_steps = mc_steps;
     dock_param.opt_steps = opt_steps;
-    dock_param.tor_prec = tor_prec;
-    dock_param.box_prec = box_prec;
     dock_param.refine_steps = refine_steps;
     dock_param.num_pose = num_pose;
     dock_param.rmsd_limit = rmsd_limit;
@@ -165,7 +161,7 @@ void RunDockingPipeline(
     if (constraint_docking){
         dock_param.randomize = false;
     }
-    
+
     // Create output directory if it doesn't exist
     if (!std::filesystem::exists(output_dir)) {
         try {
@@ -175,7 +171,7 @@ void RunDockingPipeline(
             exit(1);
         }
     }
-    
+
     // Run the docking
     if (task == "screen"){ // allow changing every parameter
         spdlog::info("----------------------- RUN Screening -----------------------");
@@ -232,19 +228,17 @@ PYBIND11_MODULE(pipeline, m) {
         py::arg("size_z"),
         py::arg("task") = "screen",
         py::arg("search_mode") = "balance",
-        py::arg("exhaustiveness") = 128,
+        py::arg("exhaustiveness") = 512,
         py::arg("randomize") = true,
-        py::arg("mc_steps") = 20,
-        py::arg("opt_steps") = 10,
-        py::arg("tor_prec") = 0.3,
-        py::arg("box_prec") = 1.0,
+        py::arg("mc_steps") = 40,
+        py::arg("opt_steps") = -1,
         py::arg("refine_steps") = 5,
-        py::arg("num_pose") = 1,
+        py::arg("num_pose") = 10,
         py::arg("rmsd_limit") = 1.0,
-        py::arg("energy_range") = 3.0,
-        py::arg("seed") = 12345,
+        py::arg("energy_range") = 5.0,
+        py::arg("seed") = 1234567,
         py::arg("constraint_docking") = false,
-        py::arg("use_tor_lib") = true,
+        py::arg("use_tor_lib") = false,
         py::arg("gpu_device_id") = 0
     );
 }

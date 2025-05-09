@@ -1,10 +1,9 @@
 from rdkit import Chem
 
-def get_mol_without_indices(mol_input,
-                            remove_indices=[],
-                            keep_properties=[],
-                            keep_mol_properties=[]):
 
+def get_mol_without_indices(
+    mol_input, remove_indices=[], keep_properties=[], keep_mol_properties=[]
+):
     mol_property_dict = {}
     for mol_property_name in keep_mol_properties:
         mol_property_dict[mol_property_name] = mol_input.GetProp(mol_property_name)
@@ -12,7 +11,6 @@ def get_mol_without_indices(mol_input,
     atom_list, bond_list, idx_map = [], [], {}  # idx_map: {old: new}
 
     for atom in mol_input.GetAtoms():
-
         props = {}
         for property_name in keep_properties:
             if property_name in atom.GetPropsAsDict():
@@ -20,19 +18,19 @@ def get_mol_without_indices(mol_input,
 
         symbol = atom.GetSymbol()
 
-        if symbol.startswith('*'):
-            atom_symbol = '*'
-            props['molAtomMapNumber'] = atom.GetAtomMapNum()
+        if symbol.startswith("*"):
+            atom_symbol = "*"
+            props["molAtomMapNumber"] = atom.GetAtomMapNum()
 
-        elif symbol.startswith('R'):
-            atom_symbol = '*'
+        elif symbol.startswith("R"):
+            atom_symbol = "*"
             if len(symbol) > 1:
                 atom_map_num = int(symbol[1:])
             else:
                 atom_map_num = atom.GetAtomMapNum()
-            props['molAtomMapNumber'] = atom_map_num
-            props['dummyLabel'] = 'R' + str(atom_map_num)
-            props['_MolFileRLabel'] = str(atom_map_num)
+            props["molAtomMapNumber"] = atom_map_num
+            props["dummyLabel"] = "R" + str(atom_map_num)
+            props["_MolFileRLabel"] = str(atom_map_num)
 
         else:
             atom_symbol = symbol
@@ -43,17 +41,13 @@ def get_mol_without_indices(mol_input,
                 atom.GetChiralTag(),
                 atom.GetFormalCharge(),
                 atom.GetNumExplicitHs(),
-                props
+                props,
             )
         )
 
     for bond in mol_input.GetBonds():
         bond_list.append(
-            (
-                bond.GetBeginAtomIdx(),
-                bond.GetEndAtomIdx(),
-                bond.GetBondType()
-            )
+            (bond.GetBeginAtomIdx(), bond.GetEndAtomIdx(), bond.GetBondType())
         )
 
     mol = Chem.RWMol(Chem.Mol())
@@ -79,34 +73,23 @@ def get_mol_without_indices(mol_input,
             new_idx += 1
 
     for bond_info in bond_list:
-        if (
-            bond_info[0] not in remove_indices
-            and bond_info[1] not in remove_indices
-        ):
-            mol.AddBond(
-                idx_map[bond_info[0]],
-                idx_map[bond_info[1]],
-                bond_info[2]
-            )
+        if bond_info[0] not in remove_indices and bond_info[1] not in remove_indices:
+            mol.AddBond(idx_map[bond_info[0]], idx_map[bond_info[1]], bond_info[2])
 
         else:
             one_in = False
-            if (
-                (bond_info[0] in remove_indices)
-                and (bond_info[1] not in remove_indices)
+            if (bond_info[0] in remove_indices) and (
+                bond_info[1] not in remove_indices
             ):
                 keep_index = bond_info[1]
-                remove_index = bond_info[0]
                 one_in = True
-            elif (
-                (bond_info[1] in remove_indices)
-                and (bond_info[0] not in remove_indices)
+            elif (bond_info[1] in remove_indices) and (
+                bond_info[0] not in remove_indices
             ):
                 keep_index = bond_info[0]
-                remove_index = bond_info[1]
                 one_in = True
             if one_in:
-                if atom_list[keep_index][0] in ['N', 'P']:
+                if atom_list[keep_index][0] in ["N", "P"]:
                     old_num_explicit_Hs = mol.GetAtomWithIdx(
                         idx_map[keep_index]
                     ).GetNumExplicitHs()
@@ -124,11 +107,10 @@ def get_mol_without_indices(mol_input,
     mol.UpdatePropertyCache(strict=False)
     return mol
 
-def get_mol_with_indices(mol_input,
-                         selected_indices=[],
-                         keep_properties=[],
-                         keep_mol_properties=[]):
 
+def get_mol_with_indices(
+    mol_input, selected_indices=[], keep_properties=[], keep_mol_properties=[]
+):
     mol_property_dict = {}
     for mol_property_name in keep_mol_properties:
         mol_property_dict[mol_property_name] = mol_input.GetProp(mol_property_name)
@@ -136,7 +118,6 @@ def get_mol_with_indices(mol_input,
     atom_list, bond_list, idx_map = [], [], {}  # idx_map: {old: new}
 
     for atom in mol_input.GetAtoms():
-
         props = {}
         for property_name in keep_properties:
             if property_name in atom.GetPropsAsDict():
@@ -144,19 +125,19 @@ def get_mol_with_indices(mol_input,
 
         symbol = atom.GetSymbol()
 
-        if symbol.startswith('*'):
-            atom_symbol = '*'
-            props['molAtomMapNumber'] = atom.GetAtomMapNum()
+        if symbol.startswith("*"):
+            atom_symbol = "*"
+            props["molAtomMapNumber"] = atom.GetAtomMapNum()
 
-        elif symbol.startswith('R'):
-            atom_symbol = '*'
+        elif symbol.startswith("R"):
+            atom_symbol = "*"
             if len(symbol) > 1:
                 atom_map_num = int(symbol[1:])
             else:
                 atom_map_num = atom.GetAtomMapNum()
-            props['molAtomMapNumber'] = atom_map_num
-            props['dummyLabel'] = 'R' + str(atom_map_num)
-            props['_MolFileRLabel'] = str(atom_map_num)
+            props["molAtomMapNumber"] = atom_map_num
+            props["dummyLabel"] = "R" + str(atom_map_num)
+            props["_MolFileRLabel"] = str(atom_map_num)
 
         else:
             atom_symbol = symbol
@@ -167,17 +148,13 @@ def get_mol_with_indices(mol_input,
                 atom.GetChiralTag(),
                 atom.GetFormalCharge(),
                 atom.GetNumExplicitHs(),
-                props
+                props,
             )
         )
 
     for bond in mol_input.GetBonds():
         bond_list.append(
-            (
-                bond.GetBeginAtomIdx(),
-                bond.GetEndAtomIdx(),
-                bond.GetBondType()
-            )
+            (bond.GetBeginAtomIdx(), bond.GetEndAtomIdx(), bond.GetBondType())
         )
 
     mol = Chem.RWMol(Chem.Mol())
@@ -203,34 +180,23 @@ def get_mol_with_indices(mol_input,
             new_idx += 1
 
     for bond_info in bond_list:
-        if (
-            bond_info[0] in selected_indices
-            and bond_info[1] in selected_indices
-        ):
-            mol.AddBond(
-                idx_map[bond_info[0]],
-                idx_map[bond_info[1]],
-                bond_info[2]
-            )
+        if bond_info[0] in selected_indices and bond_info[1] in selected_indices:
+            mol.AddBond(idx_map[bond_info[0]], idx_map[bond_info[1]], bond_info[2])
 
         else:
             one_in = False
-            if (
-                (bond_info[0] not in selected_indices)
-                and (bond_info[1] in selected_indices)
+            if (bond_info[0] not in selected_indices) and (
+                bond_info[1] in selected_indices
             ):
                 keep_index = bond_info[1]
-                remove_index = bond_info[0]
                 one_in = True
-            elif (
-                (bond_info[1] not in selected_indices)
-                and (bond_info[0] in selected_indices)
+            elif (bond_info[1] not in selected_indices) and (
+                bond_info[0] in selected_indices
             ):
                 keep_index = bond_info[0]
-                remove_index = bond_info[1]
                 one_in = True
             if one_in:
-                if atom_list[keep_index][0] in ['N', 'P']:
+                if atom_list[keep_index][0] in ["N", "P"]:
                     old_num_explicit_Hs = mol.GetAtomWithIdx(
                         idx_map[keep_index]
                     ).GetNumExplicitHs()

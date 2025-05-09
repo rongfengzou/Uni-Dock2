@@ -1,0 +1,59 @@
+name: Conda Build
+
+on:
+  push:
+    tags:
+      - "*"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [ '3.10' ]
+        cuda_compiler_version: [ '12.0' ]
+    env:
+      QUETZ_API_KEY: ${{ secrets.QUETZ_API_KEY }}
+      QUETZ_SERVER_URL: ${{ vars.QUETZ_SERVER_URL }}
+      CONDA_CHANNEL: baymax
+      VERSION: '0.0.1'
+      BUILD: '1'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Miniconda and Mamba
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          python-version: ${{ matrix.python }}
+          environment-name: conda-build
+          auto-activate-base: false
+          activate-environment: conda-build
+          mamba-version: "*"
+          channels: conda-forge
+          mamba: true
+          auto-update-conda: true
+      
+      - name: Install dependencies
+        shell: bash -l {0}
+        run: |
+          mamba install -y boa quetz-client -c conda-forge
+
+      - name: Build conda package
+        shell: bash -l {0}
+        run: |
+          export CONDA_REPODATA_USE_ZST=false
+          COMMIT=$(git rev-parse --short HEAD)
+          FULL_VERSION="${VERSION}+${COMMIT}"
+          conda mambabuild -c http://quetz.dp.tech:8088/get/baymax \
+            -c conda-forge \
+            --variants "{python: ['${{ matrix.python }}'], cuda_compiler_version: ['${{ matrix.cuda_compiler_version }}'], version: ['${FULL_VERSION}'], build: ['${{ env.BUILD }}']}" \
+            --no-anaconda-upload \
+            --output-folder conda-build \
+            conda-recipe
+
+      - name: Upload conda package
+        shell: bash -l {0}
+        run: |
+          UNIDOCK_PACKAGE=$(find conda-build/ -type f -name 'unidock2-*.tar.bz2')
+          quetz-client post_file_to_channel $CONDA_CHANNEL ${UNIDOCK_PACKAGE}

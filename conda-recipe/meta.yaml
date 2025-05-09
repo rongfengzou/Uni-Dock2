@@ -27,7 +27,7 @@ requirements:
     - {{ compiler('cxx') }}
     - {{ compiler('cuda') }} # [(linux or win) and cuda_compiler != "None"]
     # - cuda-version {{ cuda_compiler_version }} # [(cuda_compiler_version or "None") != "None"]
-    - cmake =3.27
+    - cmake >=3.27
     - make
     - pybind11
 
