@@ -21,9 +21,9 @@ TEST_DATA_DIR = os.path.join(
             os.path.join(TEST_DATA_DIR, "1EWL", "1EWL_prepared.pdb"),
             [os.path.join(TEST_DATA_DIR, "1EWL", "covalent_mol.sdf")],
             [
-                ["A", "CYS", 25, "CA"],
-                ["A", "CYS", 25, "CB"],
-                ["A", "CYS", 25, "SG"],
+                ["", "CYX", 25, "CA"],
+                ["", "CYX", 25, "CB"],
+                ["", "CYX", 25, "SG"],
             ],
             (8.411, 13.047, 6.811),
         ),

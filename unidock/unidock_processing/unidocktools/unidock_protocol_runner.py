@@ -26,11 +26,12 @@ class UnidockProtocolRunner(object):
         box_size: Tuple[float, float, float] = (30.0, 30.0, 30.0),
         template_docking: bool = False,
         reference_sdf_file_name: Optional[str] = None,
+        core_atom_mapping_dict_list: Optional[List[Optional[Dict[int, int]]]] = None,
         covalent_ligand: bool = False,
         covalent_residue_atom_info_list: Optional[List[Dict[str, Any]]] = None,
         preserve_receptor_hydrogen: bool = False,
         working_dir_name: str = "./",
-        core_atom_mapping_dict_list: Optional[List[Optional[Dict[int, int]]]] = None,
+        gpu_device_id: int = 0,
         task: str = "screen",
         search_mode: str = "balance",
         exhaustiveness: int = 512,
@@ -59,6 +60,7 @@ class UnidockProtocolRunner(object):
 
         # Docking parameters
         self.box_size = box_size
+        self.gpu_device_id = gpu_device_id
         self.task = task
         self.search_mode = search_mode
         self.exhaustiveness = exhaustiveness
@@ -169,6 +171,7 @@ class UnidockProtocolRunner(object):
             seed=self.seed,
             use_tor_lib=self.use_tor_lib,
             constraint_docking=self.template_docking or self.covalent_ligand,
+            gpu_device_id=self.gpu_device_id
         )
 
         ## generate output ud2 pose sdf
