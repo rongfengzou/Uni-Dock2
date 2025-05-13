@@ -53,7 +53,11 @@ __forceinline__ __device__ void mutate_pose_warp(const cg::thread_block_tile<TIL
     if (tile.thread_rank() == 0){
         int num_mutable = 2 + flex_topo->ntorsion; //center, orientation, torsions
         if (FLAG_CONSTRAINT_DOCK){
-            which = gen_rand_int_within(state, 2, num_mutable - 1);
+            if (num_mutable < 3){
+                which = 3; // no mutation
+            } else{
+                which = gen_rand_int_within(state, 2, num_mutable - 1);
+            }
         }
         else{
             which = gen_rand_int_within(state, 0, num_mutable - 1);
@@ -144,7 +148,8 @@ __forceinline__ __device__ void mutate_pose_warp(const cg::thread_block_tile<TIL
         apply_grad_update_dihe_warp(tile, out_pose, flex_topo, which, a);
     }
     else{
-        assert(which - 2 < flex_topo->ntorsion);
+        // no mutation
+        // assert(which - 2 < flex_topo->ntorsion);
     }
 }
 
